@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Pop Photocard Gallery</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="bg-glow"></div>
+    <header>
+        <div class="top-bar">
+            <span class="status"><span class="dot"></span> Online Database</span>
+            <span class="version">v2.0 Beta</span>
+        </div>
+        <h1>K-PHOTO<span>CARD</span></h1>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Cari bias atau grup kamu...">
+        </div>
+        <div class="filter-container">
+            <button class="filter-btn active" data-agency="all">All</button>
+            <button class="filter-btn btn-logo" data-agency="SM">
+                <img src="assets/logos/sm.png" alt="SM" class="agency-logo">
+            </button>
+            <button class="filter-btn btn-logo" data-agency="YG">
+                <img src="assets/logos/yg.png" alt="YG" class="agency-logo">
+            </button>
+            <button class="filter-btn btn-logo" data-agency="JYP">
+                <img src="assets/logos/jyp.png" alt="JYP" class="agency-logo">
+            </button>
+            <button class="filter-btn btn-logo" data-agency="HYBE">
+                <img src="assets/logos/hybe.png" alt="HYBE" class="agency-logo">
+            </button>
+            <button class="filter-btn" data-agency="other">Other</button>
+            <button class="filter-btn" id="show-favs">❤ Koleksi Saya</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2 class="hero-title">Your Ultimate Digital</h2>
+                <h2 class="typing-text"></h2>
+                <p class="hero-subtitle">Collect, flip, and manage your favorite bias photocards in one sleek 3D gallery.</p>
+                <div class="hero-btns">
+                    <a href="#pc-container" class="btn-primary">Start Collecting</a>
+                    <a href="#" class="btn-outline" id="total-stats">0 Cards Loaded</a>
+                </div>
+            </div>
+        </section>
+        <div id="pc-container" class="pc-grid">
+        </div>
+    </main>
+
+    <div id="pc-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>K-PHOTO<span>CARD</span></h3>
+                <p>Koleksi digital photocard bias favoritmu dengan kualitas tinggi.</p>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 K-PhotoCard Project. Made with 💖 for K-Pop Fans.
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+[{
+        "member": "Karina",
+        "group": "aespa",
+        "agency": "SM",
+        "image": "assets/members/karina.jpg",
+        "logo": "assets/logos/aespa.png",
+        "era": "Armageddon"
+    },
+    {
+        "member": "Wonyoung",
+        "group": "IVE",
+        "agency": "Starship",
+        "image": "assets/members/wonyoung.jpg",
+        "logo": "assets/logos/ive.png",
+        "era": "Accendio"
+    },
+    {
+        "member": "Hanni",
+        "group": "NewJeans",
+        "agency": "HYBE",
+        "image": "assets/members/hanni.jpg",
+        "logo": "assets/logos/newjeans.png",
+        "era": "How Sweet"
+    },
+    {
+        "member": "Momo",
+        "group": "TWICE",
+        "agency": "JYP",
+        "image": "assets/members/momo.jpg",
+        "logo": "assets/logos/twice.png",
+        "era": "With YOU-th"
+    },
+    {
+        "member": "Lisa",
+        "group": "BLACKPINK",
+        "agency": "YG",
+        "image": "assets/members/lisa.jpg",
+        "logo": "assets/logos/blackpink.png",
+        "era": "Born Pink"
+    }
+]

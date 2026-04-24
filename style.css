@@ -1,0 +1,544 @@
+/* Reset & Variabel */
+
+:root {
+    --bg-color: #0f0f0f;
+    --card-bg: #1e1e1e;
+    /* Menggunakan variabel ini agar konsisten dengan script */
+    --primary: #ff007a;
+    --secondary: #00f2ff;
+    /* Tambahkan ini untuk Koleksi Saya */
+    --text: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text);
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+
+/* --- Background Glow Effect --- */
+
+.bg-glow {
+    position: fixed;
+    top: -150px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255, 0, 122, 0.15) 0%, rgba(15, 15, 15, 0) 70%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+
+/* --- Top Bar Stats --- */
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto 20px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.5;
+}
+
+.dot {
+    height: 8px;
+    width: 8px;
+    background-color: #00ff88;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+    box-shadow: 0 0 8px #00ff88;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+
+/* Header & Search */
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+header h1 {
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+header h1 span {
+    color: var(--primary);
+}
+
+.search-container {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+
+/* --- Glassmorphism pada Modal & Search --- */
+
+#search-input {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#search-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(255, 0, 122, 0.4);
+}
+
+
+/* --- Hero Section --- */
+
+.hero {
+    padding: 80px 20px;
+    text-align: center;
+    background: radial-gradient(circle at center, rgba(255, 0, 122, 0.05) 0%, transparent 70%);
+    margin-bottom: 40px;
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+
+.typing-text {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-shadow: 0 0 20px rgba(255, 0, 122, 0.5);
+    min-height: 1.2em;
+    /* Mencegah layout bergeser saat ngetik */
+}
+
+.hero-subtitle {
+    max-width: 600px;
+    margin: 20px auto 30px;
+    opacity: 0.7;
+    line-height: 1.6;
+}
+
+
+/* Buttons */
+
+.hero-btns {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 5px 20px rgba(255, 0, 122, 0.4);
+    transition: 0.3s;
+}
+
+.btn-outline {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 0, 122, 0.6);
+}
+
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+
+/* Cursor blinking effect */
+
+.typing-text::after {
+    content: '|';
+    animation: blinkCursor 0.8s infinite;
+}
+
+@keyframes blinkCursor {
+    50% {
+        opacity: 0;
+    }
+}
+
+
+/* Grid System */
+
+.pc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* --- Fitur 3D Flip Card --- */
+
+.pc-card {
+    background: transparent;
+    perspective: 1000px;
+    height: 300px;
+    cursor: pointer;
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+}
+
+.pc-card:hover {
+    box-shadow: 0 0 30px rgba(255, 0, 122, 0.2);
+}
+
+.pc-card:hover .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+
+/* --- Perbaikan Sisi Belakang Kartu --- */
+
+.card-back {
+    background: #1a1a1a;
+    /* Warna gelap solid */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--primary);
+    /* Border neon pink */
+    box-shadow: inset 0 0 20px rgba(255, 0, 122, 0.3), 0 0 15px rgba(255, 0, 122, 0.2);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 20px;
+}
+
+
+/* Gaya Logo Grup di Belakang */
+
+.card-back img {
+    width: 70%;
+    /* Ukuran logo lebih proporsional */
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px var(--primary)) brightness(1.2);
+    /* Efek glow pada logo */
+    opacity: 0.9;
+    transition: 0.3s;
+}
+
+.pc-card:hover .card-back img {
+    transform: scale(0.9);
+    /* Sedikit mengecil saat mulai berputar */
+}
+
+
+/* Bagian Depan (Member - Saat di-hover) */
+
+.card-front {
+    transform: rotateY(180deg);
+}
+
+.card-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* Overlay Info di Depan */
+
+.info {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+}
+
+.info h3 {
+    font-size: 18px;
+    margin-bottom: 2px;
+}
+
+.info p {
+    font-size: 12px;
+    color: var(--primary);
+    font-weight: bold;
+}
+
+.filter-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0 40px;
+    flex-wrap: wrap;
+}
+
+.btn-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 15px;
+    /* Sesuaikan padding agar logo tidak sesak */
+    min-width: 80px;
+    /* Pastikan lebar tombol seragam */
+    height: 40px;
+}
+
+
+/* Styling Khusus untuk Logo di dalam Button */
+
+.agency-logo {
+    max-height: 22px;
+    /* Ukuran logo dikunci agar tidak merusak tinggi button */
+    max-width: 60px;
+    /* Biar tidak terlalu lebar */
+    width: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    /* Logo jadi putih agar seragam */
+    opacity: 0.8;
+    transition: 0.3s;
+}
+
+.filter-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* UKURAN SERAGAM */
+    min-width: 90px;
+    /* Lebar minimal agar tidak terlalu pendek */
+    height: 45px;
+    /* Tinggi dikunci agar semua tombol sama tinggi */
+    padding: 0 20px;
+    border-radius: 25px;
+    /* Lebih membulat agar estetik */
+    border: 1px solid var(--primary);
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+    font-size: 14px;
+}
+
+
+/* State Active & Hover */
+
+.filter-btn.active,
+.filter-btn:hover {
+    background: var(--primary);
+    box-shadow: 0 0 15px rgba(255, 0, 122, 0.5);
+    transform: translateY(-2px);
+    /* Efek melayang dikit */
+}
+
+.filter-btn.active .agency-logo,
+.filter-btn:hover .agency-logo {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+
+/* Khusus filter-btn active */
+
+.filter-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+
+/* Khusus Tombol Koleksi (Warna Cyan) */
+
+#show-favs {
+    border-color: var(--secondary);
+    color: var(--secondary);
+    min-width: 130px;
+    /* Sedikit lebih lebar karena teksnya panjang */
+}
+
+#show-favs.active,
+#show-favs:hover {
+    background: var(--secondary) !important;
+    color: var(--bg-color) !important;
+    box-shadow: 0 0 15px var(--secondary);
+}
+
+
+/* Favorite Icon */
+
+.fav-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 100;
+    /* Pastikan sangat tinggi */
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    transition: transform 0.2s;
+}
+
+.fav-btn:hover {
+    transform: scale(1.2);
+}
+
+.fav-btn.is-fav {
+    color: var(--primary);
+}
+
+
+/* Modal Detail */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(8px);
+}
+
+.modal-content {
+    background: var(--card-bg);
+    margin: 5% auto;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 25px;
+    position: relative;
+    text-align: center;
+    border: 1px solid #333;
+    animation: modalExpand 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+@keyframes modalExpand {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.close-modal {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 30px;
+    cursor: pointer;
+    color: #fff;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0f0f0f;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+}
+
+
+/* --- Footer Styling --- */
+
+footer {
+    margin-top: 80px;
+    padding: 40px 20px;
+    background: linear-gradient(to top, #000, transparent);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    text-align: center;
+}
+
+.footer-content h3 {
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.footer-bottom {
+    margin-top: 30px;
+    font-size: 12px;
+    opacity: 0.4;
+}
+
+
+/* --- Animasi Masuk untuk Grid --- */
+
+.pc-grid {
+    animation: fadeInPage 1s ease-out;
+}
+
+@keyframes fadeInPage {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
