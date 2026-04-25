@@ -7,17 +7,22 @@ let count = 0;
 let index = 0;
 let currentText = "";
 let letter = "";
+let currentPage = 1;
+const cardsPerPage = 20;
+let filteredData = [];
+let myCollection = JSON.parse(localStorage.getItem('myCollection')) || [];
+let myFavorites = JSON.parse(localStorage.getItem('myFavorites')) || [];
+let currentSection = 'all';
 
 async function loadData() {
     try {
         const response = await fetch('data.json');
         pcData = await response.json();
-
-        // Update stats di button hero
         document.getElementById('total-stats').textContent = `${pcData.length} Cards Loaded`;
 
-        renderCards(pcData);
-        type(); // Jalankan animasi ngetik setelah data load
+        // Start dengan section 'all' secara default
+        showSection('all');
+        type();
     } catch (error) {
         console.error("Gagal memuat data JSON:", error);
     }
@@ -45,31 +50,38 @@ function renderCards(data) {
     container.innerHTML = '';
 
     if (data.length === 0) {
-        container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:50px; opacity:0.5;">
-            <p>Tidak ada photocard yang ditemukan.</p>
-        </div>`;
+        container.innerHTML = `<p style="grid-column: 1/-1; opacity: 0.5;">Belum ada kartu di sini.</p>`;
         return;
     }
 
-    data.forEach((item, index) => {
-        const isFav = favorites.includes(item.member);
-        const card = document.createElement('div');
-        card.className = 'pc-card';
-        card.style.animationDelay = `${index * 0.05}s`;
+    data.forEach(item => {
+        const isFav = myFavorites.some(f => f.id_unique === item.id_unique);
 
+        const rarityBase = item.rarity ? item.rarity.replace(/\s+/g, '').toLowerCase() : 'common';
+        let rarityClass = `rank-${rarityBase}`;
+
+        if (item.rarity === "ULTRA RARE" || item.rarity === "SECRET") {
+            rarityClass += " card-shiny card-holo";
+        } else if (item.rarity === "RARE" || item.rarity === "SUPER RARE") {
+            rarityClass += " card-shiny";
+        }
+
+        const card = document.createElement('div');
+        card.className = `pc-card ${rarityClass}`;
+
+        // PERBAIKAN: Gunakan tanda kutip yang benar untuk parameter string
         card.innerHTML = `
             <div class="card-inner">
-                <div class="card-back">
-                    <img src="${item.logo}" alt="Logo">
+                <button class="fav-btn ${isFav ? 'is-fav' : ''}" 
+                    onclick="event.stopPropagation(); toggleFavorite('${item.id_unique}')">
+                    ${isFav ? '❤️' : '♡'}
+                </button>
+                
+                <div class="card-back" onclick="showDetail('${item.id_unique}')">
+                    <img src="${item.logo}" alt="logo">
                 </div>
-                <div class="card-front" onclick="showDetail('${item.member}')">
-                    <button class="fav-btn ${isFav ? 'is-fav' : ''}" 
-                            onclick="toggleFav(event, '${item.member}')">❤</button>
+                <div class="card-front" onclick="showDetail('${item.id_unique}')">
                     <img src="${item.image}" alt="${item.member}">
-                    <div class="info">
-                        <h3>${item.member}</h3>
-                        <p>${item.group}</p>
-                    </div>
                 </div>
             </div>
         `;
@@ -89,51 +101,232 @@ document.getElementById('search-input').addEventListener('input', (e) => {
 });
 
 function applyCurrentFilter() {
-    const big4 = ['SM', 'YG', 'JYP', 'HYBE'];
-    let dataToRender;
+    const big4Keywords = ['SM', 'YG', 'JYP', 'HYBE'];
 
-    if (currentActiveFilter === 'favorites') {
-        dataToRender = pcData.filter(item => favorites.includes(item.member));
+    if (currentActiveFilter === 'all') {
+        filteredData = pcData;
     } else if (currentActiveFilter === 'other') {
-        dataToRender = pcData.filter(item => !big4.includes(item.agency.toUpperCase()));
-    } else if (currentActiveFilter === 'all') {
-        dataToRender = pcData;
+        // Filter kartu yang agensinya TIDAK mengandung kata kunci Big 4
+        filteredData = pcData.filter(item =>
+            !big4Keywords.some(key => item.agency.toUpperCase().includes(key))
+        );
     } else {
-        dataToRender = pcData.filter(item => item.agency.toUpperCase() === currentActiveFilter.toUpperCase());
+        // Filter untuk SM, YG, JYP, atau HYBE
+        filteredData = pcData.filter(item =>
+            item.agency.toUpperCase().includes(currentActiveFilter.toUpperCase())
+        );
     }
 
+    // Gabungkan dengan fitur Search jika ada
     if (currentSearchKeyword !== '') {
-        dataToRender = dataToRender.filter(item =>
+        filteredData = filteredData.filter(item =>
             item.member.toLowerCase().includes(currentSearchKeyword) ||
             item.group.toLowerCase().includes(currentSearchKeyword)
         );
     }
 
-    renderCards(dataToRender);
+    currentPage = 1;
+    updateDisplay();
 }
 
-function toggleFav(event, name) {
-    event.stopPropagation();
+function showSection(section) {
+    currentSection = section;
+    const gachaBtn = document.getElementById('gacha-control');
+    const paginationContainer = document.getElementById('pagination-container');
+    const agencyFilterGroup = document.querySelector('.filter-group');
+    const searchBar = document.querySelector('.search-container');
 
-    if (favorites.includes(name)) {
-        favorites = favorites.filter(fav => fav !== name);
-    } else {
-        favorites.push(name);
+    // 1. Update status tombol navigasi utama (All, Collection, Favorite)
+    document.querySelectorAll('.main-nav .filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    // Cari tombol yang diklik dan kasih active
+    const activeBtn = document.querySelector(`.main-nav .filter-btn[onclick*="${section}"]`);
+    if (activeBtn) activeBtn.classList.add('active');
+
+    // 2. Logika tampilan per section
+    if (section === 'all') {
+        // Tampilkan filter agensi, pagination, dan sembunyikan gacha
+        if (agencyFilterGroup) agencyFilterGroup.style.display = 'flex';
+        if (paginationContainer) paginationContainer.style.display = 'flex';
+        if (searchBar) searchBar.style.display = 'block';
+        gachaBtn.style.display = 'none';
+
+        applyCurrentFilter(); // Render ulang data dari database global
+    } else if (section === 'collection') {
+        // Tampilkan gacha, sembunyikan filter agensi & pagination
+        if (agencyFilterGroup) agencyFilterGroup.style.display = 'none';
+        if (paginationContainer) paginationContainer.style.display = 'none';
+        if (searchBar) searchBar.style.display = 'none'; // Gacha biasanya nggak butuh search
+        gachaBtn.style.display = 'flex';
+
+        renderCards(myCollection); // Ambil dari hasil gacha
+    } else if (section === 'favorite') {
+        // Sembunyikan semuanya, tampilkan koleksi love
+        if (agencyFilterGroup) agencyFilterGroup.style.display = 'none';
+        if (paginationContainer) paginationContainer.style.display = 'none';
+        if (searchBar) searchBar.style.display = 'block';
+        gachaBtn.style.display = 'none';
+
+        renderCards(myFavorites); // Ambil dari favorit
+    }
+}
+
+function updateDisplay() {
+    const startIndex = (currentPage - 1) * cardsPerPage;
+    const endIndex = startIndex + cardsPerPage;
+    const dataToRender = filteredData.slice(startIndex, endIndex);
+
+    renderCards(dataToRender);
+    renderPagination();
+
+    if (currentPage > 1) {
+        document.getElementById('pc-container').scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+function renderPagination() {
+    const container = document.getElementById('pagination-container');
+    container.innerHTML = '';
+
+    const totalPages = Math.ceil(filteredData.length / cardsPerPage);
+    if (totalPages <= 1) return;
+
+    container.innerHTML += `<button onclick="goToPage(1)" ${currentPage === 1 ? 'disabled' : ''}>First</button>`;
+    container.innerHTML += `<button onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>Prev</button>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        container.innerHTML += `
+            <button class="${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>
+        `;
     }
 
-    localStorage.setItem('kpopFavs', JSON.stringify(favorites));
-
-    applyCurrentFilter();
+    container.innerHTML += `<button onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
+    container.innerHTML += `<button onclick="goToPage(${totalPages})" ${currentPage === totalPages ? 'disabled' : ''}>Last</button>`;
 }
 
-document.querySelectorAll('.filter-btn').forEach(btn => {
-    if (btn.id === 'show-favs') return;
+function goToPage(page) {
+    currentPage = page;
+    updateDisplay();
+}
 
+function getGacha() {
+    const btn = document.getElementById('gacha-control');
+    btn.innerHTML = "🎲 ROLLING...";
+    btn.disabled = true;
+
+    setTimeout(() => {
+        const rand = Math.random() * 100;
+        let rank = "";
+        let rankLabel = "";
+        let finishEffect = "";
+
+        // Logika Rarity Rank (Probabilitas kamu)
+        if (rand <= 1) {
+            rank = "rank-secret";
+            rankLabel = "SECRET";
+        } else if (rand <= 5) {
+            rank = "rank-limited";
+            rankLabel = "LIMITED";
+        } else if (rand <= 10) {
+            rank = "rank-ultrarare";
+            rankLabel = "ULTRA RARE";
+        } else if (rand <= 20) {
+            rank = "rank-superrare";
+            rankLabel = "SUPER RARE";
+        } else if (rand <= 35) {
+            rank = "rank-rare";
+            rankLabel = "RARE";
+        } else if (rand <= 60) {
+            rank = "rank-uncommon";
+            rankLabel = "UNCOMMON";
+        } else {
+            rank = "rank-common";
+            rankLabel = "COMMON";
+        }
+
+        // Finish Effect
+        const effectRand = Math.random() * 100;
+        if (rankLabel === "SECRET" || rankLabel === "LIMITED") finishEffect = "card-shiny card-holo";
+        else if (effectRand <= 20) finishEffect = "card-shiny card-holo";
+        else if (effectRand <= 50) finishEffect = "card-holo";
+        else if (effectRand <= 80) finishEffect = "card-shiny";
+
+        const randomIndex = Math.floor(Math.random() * pcData.length);
+
+        // Buat ID unik untuk tiap kartu yang didapat (biar bisa punya banyak kartu yang sama)
+        const gachaResult = {
+            ...pcData[randomIndex],
+            id_unique: Date.now(),
+            rarityClass: `${rank} ${finishEffect}`,
+            displayRank: rankLabel
+        };
+
+        // SIMPAN KE MY COLLECTION
+        myCollection.unshift(gachaResult);
+        localStorage.setItem('myCollection', JSON.stringify(myCollection));
+
+        // Render ulang halaman collection
+        showSection('collection');
+
+        // Tampilkan detail
+        showDetail(gachaResult.member, gachaResult.displayRank, rank);
+
+        btn.innerHTML = "🎲 LUCKY GACHA";
+        btn.disabled = false;
+    }, 1200);
+}
+
+// Fungsi khusus buat nampilin hasil gacha biar gak ngerusak grid utama
+function renderGachaResult(item) {
+    const container = document.getElementById('pc-container');
+    container.innerHTML = '';
+
+    const card = document.createElement('div');
+    card.className = `pc-card ${item.rarityClass}`;
+    card.innerHTML = `
+        <div class="card-inner" onclick="showDetail('${item.member}', '${item.displayRank}', '${item.rarityClass.split(' ')[0]}')">
+            <div class="card-back"><img src="${item.logo}" alt="logo"></div>
+            <div class="card-front"><img src="${item.image}" alt="${item.member}"></div>
+        </div>
+    `;
+    container.appendChild(card);
+}
+
+function toggleFavorite(id_unique) {
+    // 1. Cari itemnya (bisa dari koleksi gacha atau database utama)
+    const item = myCollection.find(c => c.id_unique === id_unique) ||
+        pcData.find(p => p.member === id_unique);
+
+    if (!item) return;
+
+    // 2. Cek apakah sudah ada di favorites (pake id_unique kalau ada, kalau nggak pake member)
+    const itemKey = item.id_unique || item.member;
+    const index = myFavorites.findIndex(f => (f.id_unique || f.member) === itemKey);
+
+    if (index === -1) {
+        myFavorites.push(item);
+    } else {
+        myFavorites.splice(index, 1);
+    }
+
+    localStorage.setItem('myFavorites', JSON.stringify(myFavorites));
+
+    // 3. Refresh tampilan section yang sedang dibuka
+    if (currentSection === 'all') {
+        updateDisplay();
+    } else {
+        showSection(currentSection);
+    }
+}
+
+document.querySelectorAll('.filter-group .filter-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
         const button = e.currentTarget;
 
-        const currentActiveBtn = document.querySelector('.filter-btn.active');
-        if (currentActiveBtn) currentActiveBtn.classList.remove('active');
+        // Hanya hapus active di sesama tombol agensi
+        document.querySelectorAll('.filter-group .filter-btn').forEach(b => b.classList.remove('active'));
         button.classList.add('active');
 
         currentActiveFilter = button.dataset.agency;
@@ -141,40 +334,64 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     });
 });
 
-document.getElementById('show-favs').addEventListener('click', (e) => {
-    const currentActiveBtn = document.querySelector('.filter-btn.active');
-    if (currentActiveBtn) currentActiveBtn.classList.remove('active');
-    e.target.classList.add('active');
+function showDetail(idUnique) {
+    // Cari di pcData ATAU myCollection
+    const item = pcData.find(d => d.id_unique === idUnique) ||
+        myCollection.find(d => d.id_unique === idUnique) ||
+        myFavorites.find(d => d.id_unique === idUnique);
 
-    currentActiveFilter = 'favorites';
-    applyCurrentFilter();
-});
+    if (!item) {
+        console.error("Kartu tidak ditemukan ID:", idUnique);
+        return;
+    }
 
-function showDetail(name) {
+    // Tentukan rarityClass untuk modal
+    let rarityClass = item.rarityClass || `rank-${item.rarity.replace(/\s+/g, '').toLowerCase()}`;
 
-    const item = pcData.find(d => d.member === name);
+    // Tambahkan efek jika belum ada di rarityClass (untuk kartu dari pcData)
+    if (!item.rarityClass) {
+        if (["ULTRA RARE", "SECRET"].includes(item.rarity)) rarityClass += " card-shiny card-holo";
+        else if (["RARE", "SUPER RARE"].includes(item.rarity)) rarityClass += " card-shiny";
+    }
+
     const modal = document.getElementById('pc-modal');
-
     document.getElementById('modal-body').innerHTML = `
-        <img src="${item.image}" style="width:100%; border-radius:15px; box-shadow: 0 0 20px var(--primary);">
-        <h2 style="margin-top:20px; letter-spacing: 2px;">${item.member}</h2>
-        <p style="color:var(--secondary); font-weight: bold;">${item.group} | ${item.agency}</p>
-        <hr style="margin: 15px 0; border: 0; border-top: 1px solid #333;">
-        <p style="font-size:14px; opacity:0.8;">Era Comeback: <strong>${item.era || 'Latest Release'}</strong></p>
+        <div class="modal-content-horizontal">
+            <span class="close-modal-fixed" onclick="closeModal()">&times;</span>
+            <div class="modal-left ${rarityClass}"> 
+                <img src="${item.image}" alt="${item.member}">
+            </div>
+            <div class="modal-right">
+                <span class="rarity-badge dynamic ${rarityClass.split(' ')[0]}">✨ ${item.rarity || item.displayRank}</span>
+                <h2 class="member-name">${item.member}</h2>
+                <p class="group-name">${item.group} • Official Collection</p>
+                
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <span>Era</span>
+                        <strong>${item.era || 'Various Era'}</strong>
+                    </div>
+                    <div class="detail-item">
+                        <span>Style</span>
+                        <strong>${item.style || 'Original Style'}</strong>
+                    </div>
+                    <div class="detail-item">
+                        <span>Agency</span>
+                        <strong>${item.agency}</strong>
+                    </div>
+                    <div class="detail-item">
+                        <span>Serial</span>
+                        <strong>#${item.id_unique}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
     `;
+    modal.style.display = "block"; // Pastikan modal muncul
+}
 
-    modal.style.display = "block";
+function closeModal() {
+    document.getElementById('pc-modal').style.display = "none";
 }
 
 loadData();
-
-document.querySelector('.close-modal').addEventListener('click', () => {
-    document.getElementById('pc-modal').style.display = "none";
-});
-
-window.addEventListener('click', (event) => {
-    const modal = document.getElementById('pc-modal');
-    if (event.target === modal) {
-        modal.style.display = "none";
-    }
-});

@@ -1,41 +1,225 @@
 [{
         "member": "Karina",
         "group": "aespa",
-        "agency": "SM",
-        "image": "assets/members/karina.jpg",
+        "agency": "SM Entertainment",
+        "image": "assets/members/aespa_karina.jpg",
         "logo": "assets/logos/aespa.png",
-        "era": "Armageddon"
+        "era": "Airport"
     },
     {
-        "member": "Wonyoung",
-        "group": "IVE",
-        "agency": "Starship",
-        "image": "assets/members/wonyoung.jpg",
-        "logo": "assets/logos/ive.png",
-        "era": "Accendio"
+        "member": "Winter",
+        "group": "aespa",
+        "agency": "SM Entertainment",
+        "image": "assets/members/aespa_winter.jpg",
+        "logo": "assets/logos/aespa.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Giselle",
+        "group": "aespa",
+        "agency": "SM Entertainment",
+        "image": "assets/members/aespa_giselle.jpg",
+        "logo": "assets/logos/aespa.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Ningning",
+        "group": "aespa",
+        "agency": "SM Entertainment",
+        "image": "assets/members/aespa_ningning.jpg",
+        "logo": "assets/logos/aespa.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Minji",
+        "group": "NewJeans",
+        "agency": "HYBE Corporation (ADOR)",
+        "image": "assets/members/nj_minji.jpg",
+        "logo": "assets/logos/nj.png",
+        "era": "Airport"
     },
     {
         "member": "Hanni",
         "group": "NewJeans",
-        "agency": "HYBE",
-        "image": "assets/members/hanni.jpg",
-        "logo": "assets/logos/newjeans.png",
-        "era": "How Sweet"
+        "agency": "HYBE Corporation (ADOR)",
+        "image": "assets/members/nj_hanni.jpg",
+        "logo": "assets/logos/nj.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Haerin",
+        "group": "NewJeans",
+        "agency": "HYBE Corporation (ADOR)",
+        "image": "assets/members/nj_haerin.jpg",
+        "logo": "assets/logos/nj.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Hyein",
+        "group": "NewJeans",
+        "agency": "HYBE Corporation (ADOR)",
+        "image": "assets/members/nj_hyein.jpg",
+        "logo": "assets/logos/nj.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Danielle",
+        "group": "NewJeans",
+        "agency": "HYBE Corporation (ADOR)",
+        "image": "assets/members/nj_danielle.jpg",
+        "logo": "assets/logos/nj.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Yujin",
+        "group": "IVE",
+        "agency": "Starship Entertainment",
+        "image": "assets/members/ive_yujin.jpg",
+        "logo": "assets/logos/ive.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Wonyoung",
+        "group": "IVE",
+        "agency": "Starship Entertainment",
+        "image": "assets/members/ive_wonyoung.jpg",
+        "logo": "assets/logos/ive.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Liz",
+        "group": "IVE",
+        "agency": "Starship Entertainment",
+        "image": "assets/members/ive_liz.jpg",
+        "logo": "assets/logos/ive.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Rei",
+        "group": "IVE",
+        "agency": "Starship Entertainment",
+        "image": "assets/members/ive_rei.jpg",
+        "logo": "assets/logos/ive.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Gaeul",
+        "group": "IVE",
+        "agency": "Starship Entertainment",
+        "image": "assets/members/ive_gaeul.jpg",
+        "logo": "assets/logos/ive.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Leeseo",
+        "group": "IVE",
+        "agency": "Starship Entertainment",
+        "image": "assets/members/ive_leeseo.jpg",
+        "logo": "assets/logos/ive.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Nayeon",
+        "group": "TWICE",
+        "agency": "JYP Entertainment",
+        "image": "assets/members/twice_nayeon.jpg",
+        "logo": "assets/logos/twice.png",
+        "era": "Airport"
     },
     {
         "member": "Momo",
         "group": "TWICE",
-        "agency": "JYP",
-        "image": "assets/members/momo.jpg",
+        "agency": "JYP Entertainment",
+        "image": "assets/members/twice_momo.jpg",
         "logo": "assets/logos/twice.png",
-        "era": "With YOU-th"
+        "era": "Airport"
+    },
+    {
+        "member": "Mina",
+        "group": "TWICE",
+        "agency": "JYP Entertainment",
+        "image": "assets/members/twice_mina.jpg",
+        "logo": "assets/logos/twice.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Sana",
+        "group": "TWICE",
+        "agency": "JYP Entertainment",
+        "image": "assets/members/twice_sana.jpg",
+        "logo": "assets/logos/twice.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Jihyo",
+        "group": "TWICE",
+        "agency": "JYP Entertainment",
+        "image": "assets/members/twice_jihyo.jpg",
+        "logo": "assets/logos/twice.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Dahyun",
+        "group": "TWICE",
+        "agency": "JYP Entertainment",
+        "image": "assets/members/twice_dahyun.jpg",
+        "logo": "assets/logos/twice.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Chaeyoung",
+        "group": "TWICE",
+        "agency": "JYP Entertainment",
+        "image": "assets/members/twice_chaeyoung.jpg",
+        "logo": "assets/logos/twice.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Jeongyeon",
+        "group": "TWICE",
+        "agency": "JYP Entertainment",
+        "image": "assets/members/twice_jeongyeon.jpg",
+        "logo": "assets/logos/twice.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Tzuyu",
+        "group": "TWICE",
+        "agency": "JYP Entertainment",
+        "image": "assets/members/twice_tzuyu.jpg",
+        "logo": "assets/logos/twice.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Jennie",
+        "group": "BLACKPINK",
+        "agency": "YG Entertainment",
+        "image": "assets/members/bp_jennie.jpg",
+        "logo": "assets/logos/bp.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Rose",
+        "group": "BLACKPINK",
+        "agency": "YG Entertainment",
+        "image": "assets/members/bp_rose.jpg",
+        "logo": "assets/logos/bp.png",
+        "era": "Airport"
+    },
+    {
+        "member": "Jisoo",
+        "group": "BLACKPINK",
+        "agency": "YG Entertainment",
+        "image": "assets/members/bp_jisoo.jpg",
+        "logo": "assets/logos/bp.png",
+        "era": "Airport"
     },
     {
         "member": "Lisa",
         "group": "BLACKPINK",
-        "agency": "YG",
-        "image": "assets/members/lisa.jpg",
-        "logo": "assets/logos/blackpink.png",
-        "era": "Born Pink"
+        "agency": "YG Entertainment",
+        "image": "assets/members/bp_lisa.jpg",
+        "logo": "assets/logos/bp.png",
+        "era": "Airport"
     }
 ]

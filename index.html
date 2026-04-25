@@ -17,42 +17,58 @@
             <span class="version">v2.0 Beta</span>
         </div>
         <h1>K-PHOTO<span>CARD</span></h1>
+
         <div class="search-container">
             <input type="text" id="search-input" placeholder="Cari bias atau grup kamu...">
         </div>
+
+        <button id="gacha-control" class="gacha-btn" onclick="getGacha()" style="display: none;">
+            <span class="icon">🎲</span> LUCKY GACHA
+        </button>
+
         <div class="filter-container">
-            <button class="filter-btn active" data-agency="all">All</button>
-            <button class="filter-btn btn-logo" data-agency="SM">
-                <img src="assets/logos/sm.png" alt="SM" class="agency-logo">
-            </button>
-            <button class="filter-btn btn-logo" data-agency="YG">
-                <img src="assets/logos/yg.png" alt="YG" class="agency-logo">
-            </button>
-            <button class="filter-btn btn-logo" data-agency="JYP">
-                <img src="assets/logos/jyp.png" alt="JYP" class="agency-logo">
-            </button>
-            <button class="filter-btn btn-logo" data-agency="HYBE">
-                <img src="assets/logos/hybe.png" alt="HYBE" class="agency-logo">
-            </button>
-            <button class="filter-btn" data-agency="other">Other</button>
-            <button class="filter-btn" id="show-favs">❤ Koleksi Saya</button>
+            <div class="main-nav">
+                <button class="filter-btn active" data-section="all" onclick="showSection('all')">All Cards</button>
+                <button class="filter-btn" data-section="collection" onclick="showSection('collection')">My Collection</button>
+                <button class="filter-btn" data-section="favorite" onclick="showSection('favorite')">My Favorite</button>
+            </div>
+
+            <div class="filter-group">
+                <button class="filter-btn active" data-agency="all">All Agency</button>
+
+                <button class="filter-btn btn-logo" data-agency="SM">
+                    <img src="assets/logos/sm.png" alt="SM" class="agency-logo">
+                </button>
+                <button class="filter-btn btn-logo" data-agency="YG">
+                    <img src="assets/logos/yg.png" alt="YG" class="agency-logo">
+                </button>
+                <button class="filter-btn btn-logo" data-agency="JYP">
+                    <img src="assets/logos/jyp.png" alt="JYP" class="agency-logo">
+                </button>
+                <button class="filter-btn btn-logo" data-agency="HYBE">
+                    <img src="assets/logos/hybe.png" alt="HYBE" class="agency-logo">
+                </button>
+
+                <button class="filter-btn" data-agency="other">Other</button>
+            </div>
         </div>
     </header>
 
     <main>
         <section class="hero">
             <div class="hero-content">
-                <h2 class="hero-title">Your Ultimate Digital</h2>
+                <h2 class="hero-title">Start Your Journey</h2>
                 <h2 class="typing-text"></h2>
-                <p class="hero-subtitle">Collect, flip, and manage your favorite bias photocards in one sleek 3D gallery.</p>
+                <p class="hero-subtitle">Open card packs, collect your favorite members, and build your dream collection now.</p>
                 <div class="hero-btns">
-                    <a href="#pc-container" class="btn-primary">Start Collecting</a>
+                    <a href="#" class="btn-primary" onclick="showSection('collection')">Start Collecting</a>
                     <a href="#" class="btn-outline" id="total-stats">0 Cards Loaded</a>
                 </div>
             </div>
         </section>
         <div id="pc-container" class="pc-grid">
         </div>
+        <div id="pagination-container" class="pagination"></div>
     </main>
 
     <div id="pc-modal" class="modal">
