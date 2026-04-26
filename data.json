@@ -1,225 +1,155 @@
 [{
-        "member": "Karina",
-        "group": "aespa",
-        "agency": "SM Entertainment",
-        "image": "assets/members/aespa_karina.jpg",
-        "logo": "assets/logos/aespa.png",
-        "era": "Airport"
-    },
-    {
-        "member": "Winter",
-        "group": "aespa",
-        "agency": "SM Entertainment",
-        "image": "assets/members/aespa_winter.jpg",
-        "logo": "assets/logos/aespa.png",
-        "era": "Airport"
-    },
-    {
-        "member": "Giselle",
-        "group": "aespa",
-        "agency": "SM Entertainment",
-        "image": "assets/members/aespa_giselle.jpg",
-        "logo": "assets/logos/aespa.png",
-        "era": "Airport"
-    },
-    {
-        "member": "Ningning",
-        "group": "aespa",
-        "agency": "SM Entertainment",
-        "image": "assets/members/aespa_ningning.jpg",
-        "logo": "assets/logos/aespa.png",
-        "era": "Airport"
-    },
-    {
-        "member": "Minji",
-        "group": "NewJeans",
-        "agency": "HYBE Corporation (ADOR)",
-        "image": "assets/members/nj_minji.jpg",
-        "logo": "assets/logos/nj.png",
-        "era": "Airport"
-    },
-    {
-        "member": "Hanni",
-        "group": "NewJeans",
-        "agency": "HYBE Corporation (ADOR)",
-        "image": "assets/members/nj_hanni.jpg",
-        "logo": "assets/logos/nj.png",
-        "era": "Airport"
-    },
-    {
-        "member": "Haerin",
-        "group": "NewJeans",
-        "agency": "HYBE Corporation (ADOR)",
-        "image": "assets/members/nj_haerin.jpg",
-        "logo": "assets/logos/nj.png",
-        "era": "Airport"
-    },
-    {
-        "member": "Hyein",
-        "group": "NewJeans",
-        "agency": "HYBE Corporation (ADOR)",
-        "image": "assets/members/nj_hyein.jpg",
-        "logo": "assets/logos/nj.png",
-        "era": "Airport"
-    },
-    {
-        "member": "Danielle",
-        "group": "NewJeans",
-        "agency": "HYBE Corporation (ADOR)",
-        "image": "assets/members/nj_danielle.jpg",
-        "logo": "assets/logos/nj.png",
-        "era": "Airport"
-    },
-    {
-        "member": "Yujin",
-        "group": "IVE",
-        "agency": "Starship Entertainment",
-        "image": "assets/members/ive_yujin.jpg",
-        "logo": "assets/logos/ive.png",
-        "era": "Airport"
-    },
-    {
+        "id_unique": "IVE-WY-01",
         "member": "Wonyoung",
         "group": "IVE",
         "agency": "Starship Entertainment",
-        "image": "assets/members/ive_wonyoung.jpg",
-        "logo": "assets/logos/ive.png",
-        "era": "Airport"
+        "rarity": "SUPER RARE",
+        "era": "ELEVEN",
+        "style": "Debut Era",
+        "image": "assets/pc/ive_wy_debut.jpg",
+        "logo": "assets/logos/ive.png"
     },
     {
-        "member": "Liz",
+        "id_unique": "IVE-WY-02",
+        "member": "Wonyoung",
         "group": "IVE",
         "agency": "Starship Entertainment",
-        "image": "assets/members/ive_liz.jpg",
-        "logo": "assets/logos/ive.png",
-        "era": "Airport"
+        "rarity": "COMMON",
+        "era": "Off-duty",
+        "style": "Airport Fashion",
+        "image": "assets/pc/ive_wy_airport.jpg",
+        "logo": "assets/logos/ive.png"
     },
     {
-        "member": "Rei",
+        "id_unique": "IVE-WY-03",
+        "member": "Wonyoung",
         "group": "IVE",
         "agency": "Starship Entertainment",
-        "image": "assets/members/ive_rei.jpg",
-        "logo": "assets/logos/ive.png",
-        "era": "Airport"
+        "rarity": "RARE",
+        "era": "MMA 2023",
+        "style": "Award Fashion",
+        "image": "assets/pc/ive_wy_award.jpg",
+        "logo": "assets/logos/ive.png"
     },
     {
-        "member": "Gaeul",
+        "id_unique": "IVE-WY-04",
+        "member": "Wonyoung",
         "group": "IVE",
         "agency": "Starship Entertainment",
-        "image": "assets/members/ive_gaeul.jpg",
-        "logo": "assets/logos/ive.png",
-        "era": "Airport"
+        "rarity": "UNCOMMON",
+        "era": "I'VE MINE",
+        "style": "Selca (Selfie)",
+        "image": "assets/pc/ive_wy_selca.jpg",
+        "logo": "assets/logos/ive.png"
     },
     {
-        "member": "Leeseo",
+        "id_unique": "IVE-WY-05",
+        "member": "Wonyoung",
         "group": "IVE",
         "agency": "Starship Entertainment",
-        "image": "assets/members/ive_leeseo.jpg",
-        "logo": "assets/logos/ive.png",
-        "era": "Airport"
+        "rarity": "RARE",
+        "era": "I'VE IVE",
+        "style": "Stage Performance",
+        "image": "assets/pc/ive_wy_stage.jpg",
+        "logo": "assets/logos/ive.png"
     },
     {
-        "member": "Nayeon",
-        "group": "TWICE",
-        "agency": "JYP Entertainment",
-        "image": "assets/members/twice_nayeon.jpg",
-        "logo": "assets/logos/twice.png",
-        "era": "Airport"
+        "id_unique": "IVE-WY-06",
+        "member": "Wonyoung",
+        "group": "IVE",
+        "agency": "Starship Entertainment",
+        "rarity": "ULTRA RARE",
+        "era": "SHOW WHAT I HAVE",
+        "style": "Concert",
+        "image": "assets/pc/ive_wy_concert.jpg",
+        "logo": "assets/logos/ive.png"
     },
     {
-        "member": "Momo",
-        "group": "TWICE",
-        "agency": "JYP Entertainment",
-        "image": "assets/members/twice_momo.jpg",
-        "logo": "assets/logos/twice.png",
-        "era": "Airport"
+        "id_unique": "IVE-WY-07",
+        "member": "Wonyoung",
+        "group": "IVE",
+        "agency": "Starship Entertainment",
+        "rarity": "LIMITED",
+        "era": "Fansign Event",
+        "style": "Fansign",
+        "image": "assets/pc/ive_wy_fansign.jpg",
+        "logo": "assets/logos/ive.png"
     },
     {
-        "member": "Mina",
-        "group": "TWICE",
-        "agency": "JYP Entertainment",
-        "image": "assets/members/twice_mina.jpg",
-        "logo": "assets/logos/twice.png",
-        "era": "Airport"
+        "id_unique": "AE-KR-01",
+        "member": "Karina",
+        "group": "aespa",
+        "agency": "SM",
+        "rarity": "SUPER RARE",
+        "era": "Black Mamba",
+        "style": "Debut Era",
+        "image": "assets/pc/ae_kr_debut.jpg",
+        "logo": "assets/logos/aespa.png"
     },
     {
-        "member": "Sana",
-        "group": "TWICE",
-        "agency": "JYP Entertainment",
-        "image": "assets/members/twice_sana.jpg",
-        "logo": "assets/logos/twice.png",
-        "era": "Airport"
+        "id_unique": "AE-KR-02",
+        "member": "Karina",
+        "group": "aespa",
+        "agency": "SM",
+        "rarity": "COMMON",
+        "era": "Off-duty",
+        "style": "Airport Fashion",
+        "image": "assets/pc/ae_kr_airport.jpg",
+        "logo": "assets/logos/aespa.png"
     },
     {
-        "member": "Jihyo",
-        "group": "TWICE",
-        "agency": "JYP Entertainment",
-        "image": "assets/members/twice_jihyo.jpg",
-        "logo": "assets/logos/twice.png",
-        "era": "Airport"
+        "id_unique": "AE-KR-03",
+        "member": "Karina",
+        "group": "aespa",
+        "agency": "SM",
+        "rarity": "RARE",
+        "era": "The Fact Music Awards",
+        "style": "Award Fashion",
+        "image": "assets/pc/ae_kr_award.jpg",
+        "logo": "assets/logos/aespa.png"
     },
     {
-        "member": "Dahyun",
-        "group": "TWICE",
-        "agency": "JYP Entertainment",
-        "image": "assets/members/twice_dahyun.jpg",
-        "logo": "assets/logos/twice.png",
-        "era": "Airport"
+        "id_unique": "AE-KR-04",
+        "member": "Karina",
+        "group": "aespa",
+        "agency": "SM",
+        "rarity": "UNCOMMON",
+        "era": "Savage",
+        "style": "Selca (Selfie)",
+        "image": "assets/pc/ae_kr_selca.jpg",
+        "logo": "assets/logos/aespa.png"
     },
     {
-        "member": "Chaeyoung",
-        "group": "TWICE",
-        "agency": "JYP Entertainment",
-        "image": "assets/members/twice_chaeyoung.jpg",
-        "logo": "assets/logos/twice.png",
-        "era": "Airport"
+        "id_unique": "AE-KR-05",
+        "member": "Karina",
+        "group": "aespa",
+        "agency": "SM",
+        "rarity": "RARE",
+        "era": "Drama",
+        "style": "Stage Performance",
+        "image": "assets/pc/ae_kr_stage.jpg",
+        "logo": "assets/logos/aespa.png"
     },
     {
-        "member": "Jeongyeon",
-        "group": "TWICE",
-        "agency": "JYP Entertainment",
-        "image": "assets/members/twice_jeongyeon.jpg",
-        "logo": "assets/logos/twice.png",
-        "era": "Airport"
+        "id_unique": "AE-KR-06",
+        "member": "Karina",
+        "group": "aespa",
+        "agency": "SM",
+        "rarity": "ULTRA RARE",
+        "era": "SYNK: Parallel Line",
+        "style": "Concert",
+        "image": "assets/pc/ae_kr_concert.jpg",
+        "logo": "assets/logos/aespa.png"
     },
     {
-        "member": "Tzuyu",
-        "group": "TWICE",
-        "agency": "JYP Entertainment",
-        "image": "assets/members/twice_tzuyu.jpg",
-        "logo": "assets/logos/twice.png",
-        "era": "Airport"
-    },
-    {
-        "member": "Jennie",
-        "group": "BLACKPINK",
-        "agency": "YG Entertainment",
-        "image": "assets/members/bp_jennie.jpg",
-        "logo": "assets/logos/bp.png",
-        "era": "Airport"
-    },
-    {
-        "member": "Rose",
-        "group": "BLACKPINK",
-        "agency": "YG Entertainment",
-        "image": "assets/members/bp_rose.jpg",
-        "logo": "assets/logos/bp.png",
-        "era": "Airport"
-    },
-    {
-        "member": "Jisoo",
-        "group": "BLACKPINK",
-        "agency": "YG Entertainment",
-        "image": "assets/members/bp_jisoo.jpg",
-        "logo": "assets/logos/bp.png",
-        "era": "Airport"
-    },
-    {
-        "member": "Lisa",
-        "group": "BLACKPINK",
-        "agency": "YG Entertainment",
-        "image": "assets/members/bp_lisa.jpg",
-        "logo": "assets/logos/bp.png",
-        "era": "Airport"
+        "id_unique": "AE-KR-07",
+        "member": "Karina",
+        "group": "aespa",
+        "agency": "SM",
+        "rarity": "LIMITED",
+        "era": "Armageddon Fansign",
+        "style": "Fansign",
+        "image": "assets/pc/ae_kr_fansign.jpg",
+        "logo": "assets/logos/aespa.png"
     }
 ]

@@ -697,13 +697,20 @@ header h1 span {
     position: absolute;
     top: 20px;
     right: 25px;
-    font-size: 30px;
+    font-size: 35px;
+    /* Sedikit diperbesar agar mudah diklik */
     cursor: pointer;
-    opacity: 0.5;
+    opacity: 0.7;
+    z-index: 9999;
+    /* Pastikan paling depan */
+    color: white;
+    transition: 0.3s;
 }
 
 .close-modal-fixed:hover {
-    color: white;
+    opacity: 1;
+    transform: scale(1.2);
+    color: var(--primary);
 }
 
 

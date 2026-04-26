@@ -218,60 +218,55 @@ function getGacha() {
 
     setTimeout(() => {
         const rand = Math.random() * 100;
-        let rank = "";
         let rankLabel = "";
-        let finishEffect = "";
+        let rankClass = "";
 
-        // Logika Rarity Rank (Probabilitas kamu)
         if (rand <= 1) {
-            rank = "rank-secret";
             rankLabel = "SECRET";
+            rankClass = "rank-secret";
         } else if (rand <= 5) {
-            rank = "rank-limited";
             rankLabel = "LIMITED";
+            rankClass = "rank-limited";
         } else if (rand <= 10) {
-            rank = "rank-ultrarare";
             rankLabel = "ULTRA RARE";
+            rankClass = "rank-ultrarare";
         } else if (rand <= 20) {
-            rank = "rank-superrare";
             rankLabel = "SUPER RARE";
+            rankClass = "rank-superrare";
         } else if (rand <= 35) {
-            rank = "rank-rare";
             rankLabel = "RARE";
+            rankClass = "rank-rare";
         } else if (rand <= 60) {
-            rank = "rank-uncommon";
             rankLabel = "UNCOMMON";
+            rankClass = "rank-uncommon";
         } else {
-            rank = "rank-common";
             rankLabel = "COMMON";
+            rankClass = "rank-common";
         }
 
-        // Finish Effect
-        const effectRand = Math.random() * 100;
-        if (rankLabel === "SECRET" || rankLabel === "LIMITED") finishEffect = "card-shiny card-holo";
-        else if (effectRand <= 20) finishEffect = "card-shiny card-holo";
-        else if (effectRand <= 50) finishEffect = "card-holo";
-        else if (effectRand <= 80) finishEffect = "card-shiny";
+        let finishEffect = "";
+        if (["SECRET", "LIMITED", "ULTRA RARE"].includes(rankLabel)) finishEffect = " card-shiny card-holo";
+        else if (["RARE", "SUPER RARE"].includes(rankLabel)) finishEffect = " card-shiny";
 
         const randomIndex = Math.floor(Math.random() * pcData.length);
+        const baseData = pcData[randomIndex];
 
-        // Buat ID unik untuk tiap kartu yang didapat (biar bisa punya banyak kartu yang sama)
+        // Buat ID unik String agar konsisten dengan JSON
+        const uniqueId = "GACHA-" + Date.now();
+
         const gachaResult = {
-            ...pcData[randomIndex],
-            id_unique: Date.now(),
-            rarityClass: `${rank} ${finishEffect}`,
-            displayRank: rankLabel
+            ...baseData,
+            id_unique: uniqueId,
+            rarity: rankLabel, // Timpa rarity asli dengan hasil gacha
+            rarityClass: `${rankClass}${finishEffect}`
         };
 
-        // SIMPAN KE MY COLLECTION
         myCollection.unshift(gachaResult);
         localStorage.setItem('myCollection', JSON.stringify(myCollection));
 
-        // Render ulang halaman collection
+        // Pindah ke section collection dan tampilkan detailnya
         showSection('collection');
-
-        // Tampilkan detail
-        showDetail(gachaResult.member, gachaResult.displayRank, rank);
+        showDetail(uniqueId); // Parameter diperbaiki
 
         btn.innerHTML = "🎲 LUCKY GACHA";
         btn.disabled = false;
@@ -295,15 +290,14 @@ function renderGachaResult(item) {
 }
 
 function toggleFavorite(id_unique) {
-    // 1. Cari itemnya (bisa dari koleksi gacha atau database utama)
-    const item = myCollection.find(c => c.id_unique === id_unique) ||
-        pcData.find(p => p.member === id_unique);
+    // Cari di semua sumber data
+    const item = myCollection.find(c => c.id_unique == id_unique) ||
+        pcData.find(p => p.id_unique == id_unique) ||
+        myFavorites.find(f => f.id_unique == id_unique);
 
     if (!item) return;
 
-    // 2. Cek apakah sudah ada di favorites (pake id_unique kalau ada, kalau nggak pake member)
-    const itemKey = item.id_unique || item.member;
-    const index = myFavorites.findIndex(f => (f.id_unique || f.member) === itemKey);
+    const index = myFavorites.findIndex(f => f.id_unique == id_unique);
 
     if (index === -1) {
         myFavorites.push(item);
@@ -313,7 +307,7 @@ function toggleFavorite(id_unique) {
 
     localStorage.setItem('myFavorites', JSON.stringify(myFavorites));
 
-    // 3. Refresh tampilan section yang sedang dibuka
+    // Refresh tampilan
     if (currentSection === 'all') {
         updateDisplay();
     } else {
@@ -335,63 +329,59 @@ document.querySelectorAll('.filter-group .filter-btn').forEach(btn => {
 });
 
 function showDetail(idUnique) {
-    // Cari di pcData ATAU myCollection
-    const item = pcData.find(d => d.id_unique === idUnique) ||
-        myCollection.find(d => d.id_unique === idUnique) ||
-        myFavorites.find(d => d.id_unique === idUnique);
+    // Gunakan == agar string "123" cocok dengan number 123
+    const item = myCollection.find(d => d.id_unique == idUnique) ||
+        pcData.find(d => d.id_unique == idUnique) ||
+        myFavorites.find(d => d.id_unique == idUnique);
 
-    if (!item) {
-        console.error("Kartu tidak ditemukan ID:", idUnique);
-        return;
-    }
+    if (!item) return;
 
-    // Tentukan rarityClass untuk modal
-    let rarityClass = item.rarityClass || `rank-${item.rarity.replace(/\s+/g, '').toLowerCase()}`;
-
-    // Tambahkan efek jika belum ada di rarityClass (untuk kartu dari pcData)
-    if (!item.rarityClass) {
+    let rarityClass = item.rarityClass;
+    if (!rarityClass) {
+        const base = item.rarity.replace(/\s+/g, '').toLowerCase();
+        rarityClass = `rank-${base}`;
         if (["ULTRA RARE", "SECRET"].includes(item.rarity)) rarityClass += " card-shiny card-holo";
         else if (["RARE", "SUPER RARE"].includes(item.rarity)) rarityClass += " card-shiny";
     }
 
     const modal = document.getElementById('pc-modal');
     document.getElementById('modal-body').innerHTML = `
-        <div class="modal-content-horizontal">
-            <span class="close-modal-fixed" onclick="closeModal()">&times;</span>
+    <div class="modal-content-horizontal">
+        <span class="close-modal-fixed" onclick="event.stopPropagation(); closeModal()">&times;</span>
             <div class="modal-left ${rarityClass}"> 
                 <img src="${item.image}" alt="${item.member}">
             </div>
             <div class="modal-right">
-                <span class="rarity-badge dynamic ${rarityClass.split(' ')[0]}">✨ ${item.rarity || item.displayRank}</span>
+                <span class="rarity-badge dynamic ${rarityClass.split(' ')[0]}">✨ ${item.rarity}</span>
                 <h2 class="member-name">${item.member}</h2>
                 <p class="group-name">${item.group} • Official Collection</p>
-                
                 <div class="detail-grid">
-                    <div class="detail-item">
-                        <span>Era</span>
-                        <strong>${item.era || 'Various Era'}</strong>
-                    </div>
-                    <div class="detail-item">
-                        <span>Style</span>
-                        <strong>${item.style || 'Original Style'}</strong>
-                    </div>
-                    <div class="detail-item">
-                        <span>Agency</span>
-                        <strong>${item.agency}</strong>
-                    </div>
-                    <div class="detail-item">
-                        <span>Serial</span>
-                        <strong>#${item.id_unique}</strong>
-                    </div>
+                    <div class="detail-item"><span>Era</span><strong>${item.era}</strong></div>
+                    <div class="detail-item"><span>Style</span><strong>${item.style}</strong></div>
+                    <div class="detail-item"><span>Agency</span><strong>${item.agency}</strong></div>
+                    <div class="detail-item"><span>Serial</span><strong>#${item.id_unique.toString().slice(-6)}</strong></div>
                 </div>
             </div>
         </div>
     `;
-    modal.style.display = "block"; // Pastikan modal muncul
+    modal.style.display = "block";
 }
 
 function closeModal() {
-    document.getElementById('pc-modal').style.display = "none";
+    const modal = document.getElementById('pc-modal');
+    if (modal) {
+        modal.style.display = "none";
+        // Bersihkan isi modal agar tidak berat saat dibuka lagi
+        document.getElementById('modal-body').innerHTML = '';
+    }
+}
+
+// Tambahkan ini agar klik di luar kotak modal (di area hitam) juga menutup modal
+window.onclick = function(event) {
+    const modal = document.getElementById('pc-modal');
+    if (event.target == modal) {
+        closeModal();
+    }
 }
 
 loadData();
