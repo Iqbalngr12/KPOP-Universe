@@ -7,35 +7,50 @@
     <title>K-Pop Photocard Gallery</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 
 <body>
     <div class="bg-glow"></div>
+
     <header>
         <div class="top-bar">
             <span class="status"><span class="dot"></span> Online Database</span>
             <span class="version">v2.0 Beta</span>
         </div>
+
         <h1>K-PHOTO<span>CARD</span></h1>
+
+        <div class="main-nav">
+            <button class="filter-btn" onclick="showSection('all')">Database</button>
+            <button class="filter-btn" onclick="showSection('gacha')">Gacha Room</button>
+            <button class="filter-btn" onclick="showSection('collection')">My Collection</button>
+            <button class="filter-btn" onclick="showSection('favorite')">Favorites</button>
+        </div>
+
+        <section class="hero">
+            <div class="hero-content">
+                <h2 class="hero-title">Start Your Journey</h2>
+                <h2 class="typing-text"></h2>
+                <p class="hero-subtitle">Open card packs, collect your favorite members, and build your dream collection now.</p>
+                <div class="hero-btns">
+                    <div class="hero-btns">
+                        <button class="btn-stats-outline" id="total-stats">602 Cards in Database</button>
+                        <button id="start-collecting-btn" onclick="showSection('gacha')">
+                            ✨ START COLLECTING
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <div class="search-container">
             <input type="text" id="search-input" placeholder="Cari bias atau grup kamu...">
         </div>
 
-        <button id="gacha-control" class="gacha-btn" onclick="getGacha()" style="display: none;">
-            <span class="icon">🎲</span> LUCKY GACHA
-        </button>
-
         <div class="filter-container">
-            <div class="main-nav">
-                <button class="filter-btn active" data-section="all" onclick="showSection('all')">All Cards</button>
-                <button class="filter-btn" data-section="collection" onclick="showSection('collection')">My Collection</button>
-                <button class="filter-btn" data-section="favorite" onclick="showSection('favorite')">My Favorite</button>
-            </div>
-
             <div class="filter-group">
                 <button class="filter-btn active" data-agency="all">All Agency</button>
-
                 <button class="filter-btn btn-logo" data-agency="SM">
                     <img src="assets/logos/sm.png" alt="SM" class="agency-logo">
                 </button>
@@ -48,42 +63,44 @@
                 <button class="filter-btn btn-logo" data-agency="HYBE">
                     <img src="assets/logos/hybe.png" alt="HYBE" class="agency-logo">
                 </button>
-
                 <button class="filter-btn" data-agency="other">Other</button>
             </div>
+        </div>
+
+        <div class="filter-sort-wrapper">
+            <select id="sort-pc" onchange="applyCurrentFilter()">
+                <option value="newest">Newest First</option>
+                <option value="az">A - Z</option>
+                <option value="rarity-high">Highest Rarity</option>
+            </select>
         </div>
     </header>
 
     <main>
-        <section class="hero">
-            <div class="hero-content">
-                <h2 class="hero-title">Start Your Journey</h2>
-                <h2 class="typing-text"></h2>
-                <p class="hero-subtitle">Open card packs, collect your favorite members, and build your dream collection now.</p>
-                <div class="hero-btns">
-                    <a href="#" class="btn-primary" onclick="showSection('collection')">Start Collecting</a>
-                    <a href="#" class="btn-outline" id="total-stats">0 Cards Loaded</a>
-                </div>
-            </div>
-        </section>
-        <div id="pc-container" class="pc-grid">
-        </div>
+        <button id="gacha-control" class="gacha-btn" onclick="getGacha()">
+            <span class="icon">🎲</span> LUCKY GACHA
+        </button>
+
+        <div id="pc-container" class="pc-grid"></div>
+
         <div id="pagination-container" class="pagination"></div>
     </main>
 
     <div id="pc-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div id="modal-body"></div>
+        <span class="close-modal-fixed" onclick="closeModal()">&times;</span>
+        <div class="modal-content-horizontal" id="modal-content-area">
         </div>
+        <div class="screenshot-hint">📸 Screenshot mode active. Press back to return.</div>
+    </div>
+
+    <div id="gacha-overlay" class="gacha-overlay">
+        <div class="pack-visual" id="gacha-pack">💎</div>
     </div>
 
     <footer>
         <div class="footer-content">
-            <div class="footer-section">
-                <h3>K-PHOTO<span>CARD</span></h3>
-                <p>Koleksi digital photocard bias favoritmu dengan kualitas tinggi.</p>
-            </div>
+            <h3>K-PHOTO<span>CARD</span></h3>
+            <p>Koleksi digital photocard bias favoritmu dengan kualitas tinggi.</p>
             <div class="footer-bottom">
                 &copy; 2026 K-PhotoCard Project. Made with 💖 for K-Pop Fans.
             </div>

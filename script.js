@@ -19,8 +19,6 @@ async function loadData() {
         const response = await fetch('data.json');
         pcData = await response.json();
         document.getElementById('total-stats').textContent = `${pcData.length} Cards Loaded`;
-
-        // Start dengan section 'all' secara default
         showSection('all');
         type();
     } catch (error) {
@@ -39,9 +37,9 @@ function type() {
     if (letter.length === currentText.length) {
         count++;
         index = 0;
-        setTimeout(type, 2000); // Tunggu sebelum ganti kata
+        setTimeout(type, 2000);
     } else {
-        setTimeout(type, 150); // Kecepatan ngetik
+        setTimeout(type, 150);
     }
 }
 
@@ -68,8 +66,6 @@ function renderCards(data) {
 
         const card = document.createElement('div');
         card.className = `pc-card ${rarityClass}`;
-
-        // PERBAIKAN: Gunakan tanda kutip yang benar untuk parameter string
         card.innerHTML = `
             <div class="card-inner">
                 <button class="fav-btn ${isFav ? 'is-fav' : ''}" 
@@ -102,22 +98,20 @@ document.getElementById('search-input').addEventListener('input', (e) => {
 
 function applyCurrentFilter() {
     const big4Keywords = ['SM', 'YG', 'JYP', 'HYBE'];
+    const sortBy = document.getElementById('sort-pc').value;
 
     if (currentActiveFilter === 'all') {
-        filteredData = pcData;
+        filteredData = [...pcData];
     } else if (currentActiveFilter === 'other') {
-        // Filter kartu yang agensinya TIDAK mengandung kata kunci Big 4
         filteredData = pcData.filter(item =>
             !big4Keywords.some(key => item.agency.toUpperCase().includes(key))
         );
     } else {
-        // Filter untuk SM, YG, JYP, atau HYBE
         filteredData = pcData.filter(item =>
             item.agency.toUpperCase().includes(currentActiveFilter.toUpperCase())
         );
     }
 
-    // Gabungkan dengan fitur Search jika ada
     if (currentSearchKeyword !== '') {
         filteredData = filteredData.filter(item =>
             item.member.toLowerCase().includes(currentSearchKeyword) ||
@@ -125,51 +119,83 @@ function applyCurrentFilter() {
         );
     }
 
+    const rarityOrder = {
+        "SECRET": 7,
+        "LIMITED": 6,
+        "ULTRA RARE": 5,
+        "SUPER RARE": 4,
+        "RARE": 3,
+        "UNCOMMON": 2,
+        "COMMON": 1
+    };
+
+    filteredData.sort((a, b) => {
+        if (sortBy === 'az') {
+            return a.member.localeCompare(b.member);
+        } else if (sortBy === 'za') {
+            return b.member.localeCompare(a.member);
+        } else if (sortBy === 'rarity-high') {
+            return rarityOrder[b.rarity] - rarityOrder[a.rarity];
+        } else if (sortBy === 'newest') {
+            return b.id_unique.localeCompare(a.id_unique);
+        } else if (sortBy === 'oldest') {
+            return a.id_unique.localeCompare(b.id_unique);
+        }
+        return 0;
+    });
+
     currentPage = 1;
     updateDisplay();
 }
 
 function showSection(section) {
     currentSection = section;
-    const gachaBtn = document.getElementById('gacha-control');
+    currentPage = 1;
+
+    const gachaBtn = document.getElementById('gacha-control'); // Tombol "Lucky Gacha"
+    const startBtn = document.getElementById('start-collecting-btn'); // Tombol "Start Collecting"
     const paginationContainer = document.getElementById('pagination-container');
-    const agencyFilterGroup = document.querySelector('.filter-group');
-    const searchBar = document.querySelector('.search-container');
+    const container = document.getElementById('pc-container');
+    const statsText = document.getElementById('total-stats');
 
-    // 1. Update status tombol navigasi utama (All, Collection, Favorite)
-    document.querySelectorAll('.main-nav .filter-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-
-    // Cari tombol yang diklik dan kasih active
+    // Reset Navigasi
+    document.querySelectorAll('.main-nav .filter-btn').forEach(btn => btn.classList.remove('active'));
     const activeBtn = document.querySelector(`.main-nav .filter-btn[onclick*="${section}"]`);
     if (activeBtn) activeBtn.classList.add('active');
 
-    // 2. Logika tampilan per section
-    if (section === 'all') {
-        // Tampilkan filter agensi, pagination, dan sembunyikan gacha
-        if (agencyFilterGroup) agencyFilterGroup.style.display = 'flex';
-        if (paginationContainer) paginationContainer.style.display = 'flex';
-        if (searchBar) searchBar.style.display = 'block';
-        gachaBtn.style.display = 'none';
+    // --- LOGIKA TOMBOL ---
+    if (section === 'gacha') {
+        // Di Gacha Room: Sembunyikan tombol "Start Collecting", munculkan tombol "Lucky Gacha"
+        if (startBtn) startBtn.style.display = 'none';
+        if (gachaBtn) gachaBtn.style.display = 'block';
 
-        applyCurrentFilter(); // Render ulang data dari database global
-    } else if (section === 'collection') {
-        // Tampilkan gacha, sembunyikan filter agensi & pagination
-        if (agencyFilterGroup) agencyFilterGroup.style.display = 'none';
+        container.innerHTML = `
+            <div class="gacha-area" style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+                <div class="gacha-box-visual">💎</div>
+                <h2 style="color: #fff; margin-top: 20px;">Gacha Room</h2>
+                <p style="opacity: 0.6;">Ready to test your luck?</p>
+            </div>
+        `;
+        statsText.textContent = "Good Luck!";
         if (paginationContainer) paginationContainer.style.display = 'none';
-        if (searchBar) searchBar.style.display = 'none'; // Gacha biasanya nggak butuh search
-        gachaBtn.style.display = 'flex';
+    } else {
+        // Di section lain: Munculkan lagi tombol "Start Collecting" (sebagai navigasi cepat)
+        // Dan sembunyikan tombol gacha utama
+        if (startBtn) startBtn.style.display = 'block';
+        if (gachaBtn) gachaBtn.style.display = 'none';
 
-        renderCards(myCollection); // Ambil dari hasil gacha
-    } else if (section === 'favorite') {
-        // Sembunyikan semuanya, tampilkan koleksi love
-        if (agencyFilterGroup) agencyFilterGroup.style.display = 'none';
-        if (paginationContainer) paginationContainer.style.display = 'none';
-        if (searchBar) searchBar.style.display = 'block';
-        gachaBtn.style.display = 'none';
-
-        renderCards(myFavorites); // Ambil dari favorit
+        if (section === 'all') {
+            statsText.textContent = `${pcData.length} Cards in Database`;
+            applyCurrentFilter();
+        } else if (section === 'collection') {
+            statsText.textContent = `${myCollection.length} Cards Collected`;
+            filteredData = [...myCollection];
+            updateDisplay();
+        } else if (section === 'favorite') {
+            statsText.textContent = `${myFavorites.length} Favorites`;
+            filteredData = [...myFavorites];
+            updateDisplay();
+        }
     }
 }
 
@@ -213,8 +239,20 @@ function goToPage(page) {
 
 function getGacha() {
     const btn = document.getElementById('gacha-control');
-    btn.innerHTML = "🎲 ROLLING...";
     btn.disabled = true;
+    btn.innerHTML = "🎲 ROLLING...";
+
+    let overlay = document.querySelector('.gacha-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'gacha-overlay';
+        overlay.innerHTML = '<div class="pack-visual">✨</div>';
+        document.body.appendChild(overlay);
+    }
+
+    overlay.style.display = 'flex';
+    const pack = overlay.querySelector('.pack-visual');
+    pack.classList.add('gacha-reveal-anim');
 
     setTimeout(() => {
         const rand = Math.random() * 100;
@@ -230,13 +268,13 @@ function getGacha() {
         } else if (rand <= 10) {
             rankLabel = "ULTRA RARE";
             rankClass = "rank-ultrarare";
-        } else if (rand <= 20) {
+        } else if (rand <= 25) {
             rankLabel = "SUPER RARE";
             rankClass = "rank-superrare";
-        } else if (rand <= 35) {
+        } else if (rand <= 45) {
             rankLabel = "RARE";
             rankClass = "rank-rare";
-        } else if (rand <= 60) {
+        } else if (rand <= 70) {
             rankLabel = "UNCOMMON";
             rankClass = "rank-uncommon";
         } else {
@@ -245,35 +283,43 @@ function getGacha() {
         }
 
         let finishEffect = "";
-        if (["SECRET", "LIMITED", "ULTRA RARE"].includes(rankLabel)) finishEffect = " card-shiny card-holo";
-        else if (["RARE", "SUPER RARE"].includes(rankLabel)) finishEffect = " card-shiny";
+        if (["SECRET", "LIMITED", "ULTRA RARE"].includes(rankLabel)) {
+            finishEffect = " card-shiny card-holo";
+        } else if (["RARE", "SUPER RARE"].includes(rankLabel)) {
+            finishEffect = " card-shiny";
+        }
 
         const randomIndex = Math.floor(Math.random() * pcData.length);
         const baseData = pcData[randomIndex];
-
-        // Buat ID unik String agar konsisten dengan JSON
         const uniqueId = "GACHA-" + Date.now();
 
         const gachaResult = {
             ...baseData,
             id_unique: uniqueId,
-            rarity: rankLabel, // Timpa rarity asli dengan hasil gacha
-            rarityClass: `${rankClass}${finishEffect}`
+            rarity: rankLabel,
+            rarityClass: `${rankClass}${finishEffect}`,
+            date_obtained: new Date().toLocaleDateString()
         };
 
         myCollection.unshift(gachaResult);
         localStorage.setItem('myCollection', JSON.stringify(myCollection));
 
-        // Pindah ke section collection dan tampilkan detailnya
-        showSection('collection');
-        showDetail(uniqueId); // Parameter diperbaiki
+        const statsText = document.getElementById('total-stats');
+        if (currentSection === 'collection') {
+            statsText.textContent = `${myCollection.length} Cards Collected`;
+        }
 
-        btn.innerHTML = "🎲 LUCKY GACHA";
+        overlay.style.display = 'none';
+        pack.classList.remove('gacha-reveal-anim');
+
         btn.disabled = false;
-    }, 1200);
+        btn.innerHTML = "🎲 LUCKY GACHA";
+
+        showDetail(uniqueId);
+
+    }, 2000);
 }
 
-// Fungsi khusus buat nampilin hasil gacha biar gak ngerusak grid utama
 function renderGachaResult(item) {
     const container = document.getElementById('pc-container');
     container.innerHTML = '';
@@ -290,7 +336,6 @@ function renderGachaResult(item) {
 }
 
 function toggleFavorite(id_unique) {
-    // Cari di semua sumber data
     const item = myCollection.find(c => c.id_unique == id_unique) ||
         pcData.find(p => p.id_unique == id_unique) ||
         myFavorites.find(f => f.id_unique == id_unique);
@@ -307,8 +352,12 @@ function toggleFavorite(id_unique) {
 
     localStorage.setItem('myFavorites', JSON.stringify(myFavorites));
 
-    // Refresh tampilan
     if (currentSection === 'all') {
+        updateDisplay();
+    } else if (currentSection === 'favorite') {
+        filteredData = [...myFavorites];
+        const maxPage = Math.ceil(filteredData.length / cardsPerPage);
+        if (currentPage > maxPage && currentPage > 1) currentPage = maxPage;
         updateDisplay();
     } else {
         showSection(currentSection);
@@ -319,7 +368,6 @@ document.querySelectorAll('.filter-group .filter-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
         const button = e.currentTarget;
 
-        // Hanya hapus active di sesama tombol agensi
         document.querySelectorAll('.filter-group .filter-btn').forEach(b => b.classList.remove('active'));
         button.classList.add('active');
 
@@ -329,12 +377,13 @@ document.querySelectorAll('.filter-group .filter-btn').forEach(btn => {
 });
 
 function showDetail(idUnique) {
-    // Gunakan == agar string "123" cocok dengan number 123
     const item = myCollection.find(d => d.id_unique == idUnique) ||
         pcData.find(d => d.id_unique == idUnique) ||
         myFavorites.find(d => d.id_unique == idUnique);
 
     if (!item) return;
+
+    playCardSound(item.rarity);
 
     let rarityClass = item.rarityClass;
     if (!rarityClass) {
@@ -361,27 +410,89 @@ function showDetail(idUnique) {
                     <div class="detail-item"><span>Agency</span><strong>${item.agency}</strong></div>
                     <div class="detail-item"><span>Serial</span><strong>#${item.id_unique.toString().slice(-6)}</strong></div>
                 </div>
+                <button class="btn-download" onclick="downloadCard('${item.id_unique}')">Download Card</button>
+                <button class="btn-screenshot" onclick="event.stopPropagation(); toggleScreenshotMode()">SCREENSHOT MODE</button>
             </div>
         </div>
     `;
     modal.style.display = "block";
 }
 
+function playCardSound(rarity) {
+    const audio = new Audio();
+    if (["ULTRA RARE", "SECRET"].includes(rarity)) {
+        audio.src = 'https://www.soundjay.com/misc/sounds/magic-chime-01.mp3';
+    } else {
+        audio.src = 'https://www.soundjay.com/buttons/sounds/button-50.mp3';
+    }
+    audio.volume = 0.3;
+    audio.play();
+}
+
+function downloadCard(idUnique) {
+    const element = document.querySelector('.modal-left');
+    const btn = document.querySelector('.btn-download');
+
+    btn.innerText = "Processing...";
+
+    html2canvas(element, {
+        useCORS: true,
+        backgroundColor: null
+    }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `KPhotoCard-${idUnique}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        btn.innerText = "Download Card";
+    });
+}
+
 function closeModal() {
     const modal = document.getElementById('pc-modal');
     if (modal) {
         modal.style.display = "none";
-        // Bersihkan isi modal agar tidak berat saat dibuka lagi
         document.getElementById('modal-body').innerHTML = '';
     }
 }
 
-// Tambahkan ini agar klik di luar kotak modal (di area hitam) juga menutup modal
 window.onclick = function(event) {
     const modal = document.getElementById('pc-modal');
     if (event.target == modal) {
         closeModal();
     }
 }
+
+function toggleScreenshotMode() {
+    const modalContent = document.querySelector('.modal-content-horizontal');
+    modalContent.classList.add('screenshot-active');
+
+    if (!document.querySelector('.screenshot-hint')) {
+        const hint = document.createElement('div');
+        hint.className = 'screenshot-hint';
+        hint.innerText = "Click anywhere to exit Screenshot Mode";
+        document.body.appendChild(hint);
+    }
+
+    const exitScreenshot = () => {
+        modalContent.classList.remove('screenshot-active');
+        window.removeEventListener('click', exitScreenshot);
+    };
+
+    setTimeout(() => {
+        window.addEventListener('click', exitScreenshot);
+    }, 100);
+}
+
+document.addEventListener('mousemove', (e) => {
+    const spark = document.createElement('div');
+    spark.className = 'sparkle-trail';
+    spark.style.left = e.pageX + 'px';
+    spark.style.top = e.pageY + 'px';
+    document.body.appendChild(spark);
+
+    setTimeout(() => {
+        spark.remove();
+    }, 800);
+});
 
 loadData();
