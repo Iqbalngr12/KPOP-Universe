@@ -394,9 +394,10 @@ function showDetail(idUnique) {
     }
 
     const modal = document.getElementById('pc-modal');
-    document.getElementById('modal-body').innerHTML = `
-    <div class="modal-content-horizontal">
-        <span class="close-modal-fixed" onclick="event.stopPropagation(); closeModal()">&times;</span>
+    // Langsung masukkan konten ke modal, jangan bikin wrapper horizontal double di sini
+    modal.innerHTML = `
+        <div class="modal-content-horizontal" id="modal-content-area">
+            <span class="close-modal-fixed" onclick="closeModal()">&times;</span>
             <div class="modal-left ${rarityClass}"> 
                 <img src="${item.image}" alt="${item.member}">
             </div>
@@ -410,12 +411,15 @@ function showDetail(idUnique) {
                     <div class="detail-item"><span>Agency</span><strong>${item.agency}</strong></div>
                     <div class="detail-item"><span>Serial</span><strong>#${item.id_unique.toString().slice(-6)}</strong></div>
                 </div>
-                <button class="btn-download" onclick="downloadCard('${item.id_unique}')">Download Card</button>
-                <button class="btn-screenshot" onclick="event.stopPropagation(); toggleScreenshotMode()">SCREENSHOT MODE</button>
+                <div class="modal-actions">
+                    <button class="btn-download" onclick="downloadCard('${item.id_unique}')">Download Card</button>
+                    <button class="btn-screenshot" onclick="toggleScreenshotMode()">SCREENSHOT MODE</button>
+                </div>
             </div>
         </div>
+        <div class="screenshot-hint">📸 Klik di mana saja untuk keluar</div>
     `;
-    modal.style.display = "block";
+    modal.style.display = "flex"; // Pastikan display-nya flex supaya konten ke tengah
 }
 
 function playCardSound(rarity) {
@@ -451,7 +455,7 @@ function closeModal() {
     const modal = document.getElementById('pc-modal');
     if (modal) {
         modal.style.display = "none";
-        document.getElementById('modal-body').innerHTML = '';
+        modal.innerHTML = ''; // Kosongkan modal agar tidak berat
     }
 }
 
@@ -481,6 +485,59 @@ function toggleScreenshotMode() {
     setTimeout(() => {
         window.addEventListener('click', exitScreenshot);
     }, 100);
+}
+
+function renderPagination() {
+    const container = document.getElementById('pagination-container');
+    container.innerHTML = '';
+
+    const totalPages = Math.ceil(filteredData.length / cardsPerPage);
+    if (totalPages <= 1) return;
+
+    // Batasan jumlah halaman yang tampil di tengah
+    const delta = 2; // Menampilkan 2 halaman ke kiri dan 2 ke kanan dari currentPage
+    const range = [];
+    const rangeWithDots = [];
+    let l;
+
+    // Masukkan halaman 1, halaman terakhir, dan halaman di sekitar currentPage ke array range
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - delta && i <= currentPage + delta)) {
+            range.push(i);
+        }
+    }
+
+    // Tambahkan titik-titik (...) di antara angka yang jaraknya lebih dari 1
+    for (let i of range) {
+        if (l) {
+            if (i - l === 2) {
+                rangeWithDots.push(l + 1);
+            } else if (i - l !== 1) {
+                rangeWithDots.push('...');
+            }
+        }
+        rangeWithDots.push(i);
+        l = i;
+    }
+
+    // Render Tombol Prev
+    container.innerHTML += `<button onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>Prev</button>`;
+
+    // Render Angka dan Dots
+    rangeWithDots.forEach(page => {
+        if (page === '...') {
+            container.innerHTML += `<span class="paging-dots">...</span>`;
+        } else {
+            container.innerHTML += `
+                <button class="${page === currentPage ? 'active' : ''}" onclick="goToPage(${page})">
+                    ${page}
+                </button>
+            `;
+        }
+    });
+
+    // Render Tombol Next
+    container.innerHTML += `<button onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
 }
 
 document.addEventListener('mousemove', (e) => {

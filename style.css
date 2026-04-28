@@ -772,37 +772,40 @@ header h1 span {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
-    margin: 40px 0;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    /* Biar tetep satu baris */
+    gap: 5px;
+    overflow-x: auto;
+    /* Kalo di HP masih kepanjangan, bisa di-swipe */
+    padding: 10px;
 }
 
 .pagination button {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: white;
-    padding: 8px 16px;
+    padding: 8px 14px;
     border-radius: 8px;
     cursor: pointer;
     transition: 0.3s;
-    font-family: 'Poppins', sans-serif;
-}
-
-.pagination button:hover:not(:disabled) {
-    background: var(--primary);
-    border-color: var(--primary);
-    box-shadow: 0 0 10px rgba(255, 0, 122, 0.5);
 }
 
 .pagination button.active {
     background: var(--primary);
     border-color: var(--primary);
-    font-weight: bold;
+    box-shadow: 0 0 15px rgba(255, 0, 122, 0.4);
 }
 
 .pagination button:disabled {
     opacity: 0.3;
     cursor: not-allowed;
+}
+
+.paging-dots {
+    color: rgba(255, 255, 255, 0.4);
+    padding: 0 10px;
+    font-weight: bold;
+    display: inline-block;
 }
 
 
