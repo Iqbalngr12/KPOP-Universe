@@ -1,6 +1,6 @@
-# 💎 K-PhotoCard Universe v2.0
+# 💎 K-PhotoCard Universe v4.0 Beta
 
-[![Status](https://img.shields.io/badge/Status-Beta--v2.0-blueviolet?style=for-the-badge)](https://github.com/Iqbalngr12)
+[![Status](https://img.shields.io/badge/Status-Beta--v4.0-blueviolet?style=for-the-badge)](https://github.com/Iqbalngr12)
 [![Tech](https://img.shields.io/badge/Tech-Vanilla--JS-yellow?style=for-the-badge)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Major](https://img.shields.io/badge/Program-TMD--PNJ-orange?style=for-the-badge)](https://tik.pnj.ac.id)
 

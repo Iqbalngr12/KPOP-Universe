@@ -82,7 +82,7 @@ groups = {
             {"full": "Juun", "m_code": "JUN"},
             {"full": "Stela", "m_code": "STL"},
             {"full": "Ye-on", "m_code": "YON"},
-            {"full": "Yuna", "m_code": "YUN"}
+            {"full": "Yuha", "m_code": "YUH"}
         ]
     },
     "ITZY": {
@@ -210,16 +210,16 @@ groups = {
     }
 }
 
-award_pool = ["MAMA Awards", "Melon Music Awards", "Asia Artist Awards", "Golden Disc Awards", "Seoul Music Awards", "K-World Dream Awards", "Gaon Chart Music Awards", "KBS Song Festival", "SBS Gayo Daejeon", "MBC Music Festival", "The Fact Music Awards", "Korea Music Awards"]
+award_pool = ["MAMA Awards", "Melon Music Awards", "Asia Artist Awards", "Golden Disc Awards", "Seoul Music Awards", "K-World Dream Awards", "Gaon Chart Music Awards", "The Fact Music Awards", "Korea Music Awards", "Korea Grand Music Awards"]
 
 style_map = {
-    "Debut Era": {"rarity": "UNCOMMON", "s_code": "DB"},
-    "Airport Fashion": {"rarity": "SUPER RARE", "s_code": "AP"},
-    "Award Fashion": {"rarity": "ULTRA RARE", "s_code": "AW"},
-    "Selca (Selfie)": {"rarity": "COMMON", "s_code": "SL"},
-    "Stage Performance": {"rarity": "RARE", "s_code": "SP"},
-    "Concert": {"rarity": "LIMITED", "s_code": "CC"},
-    "Fansign": {"rarity": "SECRET", "s_code": "FS"}
+    "Debut Era": {"rarity": "UNCOMMON", "s_code": "DB", "folder": "debut-era"},
+    "Airport Fashion": {"rarity": "SUPER RARE", "s_code": "AP", "folder": "airport-fashion"},
+    "Award Fashion": {"rarity": "ULTRA RARE", "s_code": "AW", "folder": "award-fashion"},
+    "Selca (Selfie)": {"rarity": "COMMON", "s_code": "SL", "folder": "selca"},
+    "Stage Performance": {"rarity": "RARE", "s_code": "SP", "folder": "stage-performance"},
+    "Event Festival": {"rarity": "LIMITED", "s_code": "EV", "folder": "event"},
+    "Fansign": {"rarity": "SECRET", "s_code": "FS", "folder": "fansign"}
 }
 
 pc_data = []
@@ -236,25 +236,29 @@ for group_name, info in groups.items():
         for style_name, style_info in style_map.items():
             s_code = style_info["s_code"]
             rarity = style_info["rarity"]
+            target_folder = style_info["folder"]
 
             if style_name == "Debut Era":
                 current_era = debut_song
             elif style_name == "Airport Fashion":
-                current_era = "Airport Area"
+                current_era = "Airport Era"
             elif style_name == "Award Fashion":
                 current_era = random.choice(award_pool)
             elif style_name == "Selca (Selfie)":
                 current_era = "Holiday Special"
             elif style_name == "Stage Performance":
                 current_era = "Comeback Stage"
-            elif style_name == "Concert":
-                current_era = "Tour Concert"
+            elif style_name == "Event Festival":
+                current_era = "Festival Event"
             elif style_name == "Fansign":
                 current_era = "Special Event"
             else:
                 current_era = "Special Collection"
 
-            id_unique = f"{g_code}-{m_code}-{s_code}-{counter:03}"
+            id_unique = f"{g_code}-{m_code}-{s_code}-{counter:04}"
+            
+            safe_name = m_name.lower().replace(" ", "_").replace(":", "").replace("-", "")
+            safe_group_code = g_code.lower()
             
             item = {
                 "id_unique": id_unique,
@@ -264,13 +268,13 @@ for group_name, info in groups.items():
                 "rarity": rarity,
                 "era": current_era,
                 "style": style_name,
-                "image": f"assets/members/{m_name.lower()}_{s_code.lower()}.jpg",
+                "image": f"assets/members/{target_folder}/{safe_group_code}_{safe_name}_{s_code.lower()}.jpg",
                 "logo": info["logo"]
             }
             pc_data.append(item)
             counter += 1
 
-with open('data.json', 'w') as f:
-    json.dump(pc_data, f, indent=2)
+with open('data.json', 'w', encoding='utf-8') as f:
+    json.dump(pc_data, f, indent=2, ensure_ascii=False)
 
-print(f"✅ Berhasil! {len(pc_data)} data dibuat.")
+print(f"✅ Berhasil! {len(pc_data)} data Photocard telah dibuat ke dalam data.json.")
