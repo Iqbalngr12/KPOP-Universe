@@ -1,5 +1,6 @@
 import json
 import random
+import re
 
 groups = {
     "aespa": {
@@ -223,7 +224,7 @@ style_map = {
 }
 
 pc_data = []
-counter = 1
+card_serial = 1
 
 for group_name, info in groups.items():
     g_code = info["g_code"]
@@ -255,9 +256,10 @@ for group_name, info in groups.items():
             else:
                 current_era = "Special Collection"
 
-            id_unique = f"{g_code}-{m_code}-{s_code}-{counter:04}"
+            id_unique = f"{g_code}-{m_code}-{s_code}-{card_serial:04}"
             
-            safe_name = m_name.lower().replace(" ", "_").replace(":", "").replace("-", "")
+            clean_name = m_name.lower().replace(":", "")
+            safe_name = re.sub(r'[\s\-]+', '_', clean_name)
             safe_group_code = g_code.lower()
             
             item = {
@@ -272,9 +274,9 @@ for group_name, info in groups.items():
                 "logo": info["logo"]
             }
             pc_data.append(item)
-            counter += 1
+            card_serial += 1
 
 with open('data.json', 'w', encoding='utf-8') as f:
     json.dump(pc_data, f, indent=2, ensure_ascii=False)
 
-print(f"✅ Berhasil! {len(pc_data)} data Photocard telah dibuat ke dalam data.json.")
+print(f"✅ Berhasil di-enchant! {len(pc_data)} data Photocard rapi telah disimpan ke data.json.")

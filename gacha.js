@@ -1,8 +1,3 @@
-// ============================================================
-// GACHA.JS — Pity system, single pull, multi pull, cinematic
-// ============================================================
-
-// --- GACHA STATE ---
 let pityData = JSON.parse(localStorage.getItem('pityData')) || {
     pullCount: 0,
     totalPulls: 0,
@@ -14,21 +9,15 @@ let isMultiPulling = false;
 const PITY_HARD = 50;
 const PITY_SOFT = 35;
 
-// ============================================================
-// PITY SYSTEM
-// ============================================================
-
 function rollWithPity() {
     const pull = pityData.pullCount;
 
-    // Hard pity
     if (pull >= PITY_HARD) {
         return { rankLabel: "ULTRA RARE", rankClass: "rank-ultrarare", rarityTier: "legendary" };
     }
 
     let rand = Math.random() * 100;
 
-    // Soft pity — rate naik 3% tiap pull setelah pull ke-35
     if (pull >= PITY_SOFT) {
         const boost = (pull - PITY_SOFT) * 3;
         rand = rand * (1 - boost / 100);
@@ -49,7 +38,8 @@ function buildCard(rankLabel, rankClass) {
     else if (["RARE", "SUPER RARE"].includes(rankLabel)) finishEffect = " card-shiny";
 
     const base = pcData[Math.floor(Math.random() * pcData.length)];
-    const uniqueId = "GACHA-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6);
+    const randomHex = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const uniqueId = `PC-${Date.now()}-${randomHex}`;
 
     return {
         ...base,
@@ -74,10 +64,6 @@ function savePity() {
     updatePityDisplay();
 }
 
-// ============================================================
-// SINGLE PULL — dengan cinematic reveal
-// ============================================================
-
 function getGacha() {
     if (isMultiPulling) return;
 
@@ -92,14 +78,46 @@ function getGacha() {
     localStorage.setItem('myCollection', JSON.stringify(myCollection));
     savePity();
 
-    startCinematicReveal(card, result.rarityTier, () => {
-        if (btn) btn.disabled = false;
-    });
-}
+    const overlay = document.getElementById('gacha-overlay');
+    const packWrapper = document.getElementById('main-pack-wrapper');
+    const hintText = document.getElementById('pack-hint-text');
 
-// ============================================================
-// MULTI PULL — 5 atau 10 sekaligus
-// ============================================================
+    if (!overlay || !packWrapper) {
+        startCinematicReveal(card, result.rarityTier, () => {
+            if (btn) btn.disabled = false;
+        });
+        return;
+    }
+
+    packWrapper.className = "pack-wrapper";
+    if (hintText) hintText.textContent = "✂️ CLICK TO RIP THE PACK ✂️";
+    overlay.classList.add('active');
+
+    packWrapper.onclick = function() {
+        packWrapper.onclick = null;
+
+        if (hintText) hintText.textContent = "OPENING...";
+        packWrapper.classList.add('shaking');
+
+        setTimeout(() => {
+            packWrapper.classList.remove('shaking');
+            packWrapper.classList.add('ripped');
+
+            const ripSound = new Audio('https://www.soundjay.com/cloth/sounds/clothes-ripping-1.mp3');
+            ripSound.volume = 0.4;
+            ripSound.play().catch(() => {});
+
+            setTimeout(() => {
+                overlay.classList.remove('active');
+
+                startCinematicReveal(card, result.rarityTier, () => {
+                    if (btn) btn.disabled = false;
+                });
+            }, 600);
+
+        }, 500);
+    };
+}
 
 function multiPull(count) {
     if (isMultiPulling) return;
@@ -123,18 +141,61 @@ function multiPull(count) {
     localStorage.setItem('myCollection', JSON.stringify(myCollection));
     savePity();
 
-    showMultiPullResult(results, () => {
-        isMultiPulling = false;
-        document.querySelectorAll('.pull-btn').forEach(b => {
-            b.disabled = false;
-            b.style.opacity = '1';
-        });
-    });
-}
+    const overlay = document.getElementById('gacha-overlay');
+    const packWrapper = document.getElementById('main-pack-wrapper');
+    const hintText = document.getElementById('pack-hint-text');
+    const packTopDesign = document.querySelector('.pack-top .pack-design');
 
-// ============================================================
-// MULTI PULL RESULT SCREEN
-// ============================================================
+    if (!overlay || !packWrapper) {
+        showMultiPullResult(results, () => {
+            isMultiPulling = false;
+            document.querySelectorAll('.pull-btn').forEach(b => {
+                b.disabled = false;
+                b.style.opacity = '1';
+            });
+        });
+        return;
+    }
+
+    packWrapper.className = "pack-wrapper";
+    if (packTopDesign) {
+        const badge = packTopDesign.querySelector('.pack-badge');
+        if (badge) badge.textContent = `MULTI PACK (${count} PULLS)`;
+    }
+    if (hintText) hintText.textContent = `✂️ CLICK TO RIP THE BIG PACK (${count}x) ✂️`;
+
+    overlay.classList.add('active');
+
+    packWrapper.onclick = function() {
+        packWrapper.onclick = null;
+
+        if (hintText) hintText.textContent = "OPENING PACK...";
+        packWrapper.classList.add('shaking');
+
+        setTimeout(() => {
+            packWrapper.classList.remove('shaking');
+            packWrapper.classList.add('ripped');
+
+            const ripSound = new Audio('https://www.soundjay.com/cloth/sounds/clothes-ripping-1.mp3');
+            ripSound.volume = 0.5;
+            ripSound.play().catch(() => {});
+
+            setTimeout(() => {
+                overlay.classList.remove('active');
+
+                showMultiPullResult(results, () => {
+                    isMultiPulling = false;
+                    document.querySelectorAll('.pull-btn').forEach(b => {
+
+                        b.disabled = false;
+                        b.style.opacity = '1';
+                    });
+                });
+            }, 600);
+
+        }, 500);
+    };
+}
 
 function showMultiPullResult(results, onClose) {
     const rarityOrder = { "SECRET": 7, "LIMITED": 6, "ULTRA RARE": 5, "SUPER RARE": 4, "RARE": 3, "UNCOMMON": 2, "COMMON": 1 };
@@ -202,9 +263,6 @@ function getRarityColor(rarity) {
     return colors[rarity] || "#fff";
 }
 
-// ============================================================
-// PITY UI
-// ============================================================
 
 function updatePityDisplay() {
     const pityBar     = document.getElementById('pity-bar-fill');
@@ -235,26 +293,6 @@ function injectPityUI() {
     const container = document.getElementById('pc-container');
     if (!container) return;
 
-    // Pull buttons row
-    const pullRow = document.createElement('div');
-    pullRow.className = 'pull-buttons-row';
-    pullRow.innerHTML = `
-        <button class="pull-btn pull-btn-single" onclick="getGacha()">
-            <span class="pull-icon">🎲</span>
-            <span class="pull-label">1 PULL</span>
-        </button>
-        <button class="pull-btn pull-btn-five" onclick="multiPull(5)">
-            <span class="pull-icon">✨</span>
-            <span class="pull-label">5 PULL</span>
-        </button>
-        <button class="pull-btn pull-btn-ten" onclick="multiPull(10)">
-            <span class="pull-icon">💎</span>
-            <span class="pull-label">10 PULL</span>
-            <span class="pull-badge">BEST VALUE</span>
-        </button>
-    `;
-
-    // Pity tracker
     const pityUI = document.createElement('div');
     pityUI.id = 'pity-tracker';
     pityUI.className = 'pity-tracker';
@@ -280,20 +318,9 @@ function injectPityUI() {
         </div>
     `;
 
-    // Insert sebelum gacha area
-    container.parentNode.insertBefore(pullRow, container);
     container.parentNode.insertBefore(pityUI, container);
-
-    // Sembunyikan tombol gacha lama
-    const oldBtn = document.getElementById('gacha-control');
-    if (oldBtn) oldBtn.style.display = 'none';
-
     updatePityDisplay();
 }
-
-// ============================================================
-// CINEMATIC REVEAL
-// ============================================================
 
 function startCinematicReveal(item, rarityTier, onComplete) {
     const overlay = document.createElement('div');
@@ -445,4 +472,33 @@ function closeCinematic() {
 function closeCinematicAndShowDetail(idUnique) {
     closeCinematic();
     setTimeout(() => showDetail(idUnique), 300);
+}
+
+function playCardSound(rarity) {
+    try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        
+        let frequency = 440;
+        if (["SECRET", "LIMITED"].includes(rarity)) frequency = 880;
+        else if (["ULTRA RARE", "SUPER RARE"].includes(rarity)) frequency = 660;
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(frequency, ctx.currentTime);
+        
+        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+        
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        
+        osc.start();
+        osc.stop(ctx.currentTime + 0.4);
+    } catch (e) {
+        console.log("Audio play blocked or not supported:", e);
+    }
 }
