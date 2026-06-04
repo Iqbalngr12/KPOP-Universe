@@ -45,17 +45,17 @@ function renderCards(data) {
         if (isSearching) {
             container.classList.add('empty-state');
             container.innerHTML = `
-                <div class="empty-state-icon">\U0001f50d</div>
+                <div class="empty-state-icon">🔍</div>
                 <div class="empty-state-title">Tidak ada kartu ditemukan</div>
                 <div class="empty-state-sub">Coba kata kunci lain atau hapus filter yang aktif</div>
-                <button class="empty-state-btn" onclick="clearSearch()">\u2715 Hapus Pencarian</button>
+                <button class="empty-state-btn" onclick="clearSearch()">✕ Hapus Pencarian</button>
             `;
         } else {
             container.classList.remove('empty-state');
             container.innerHTML = `
                 <p style="grid-column:1/-1; text-align:center; opacity:0.5; padding:60px 0;">
                     ${currentSection === 'wishlist'
-                        ? '\U0001f49d Wishlist kamu masih kosong.<br><small>Tambahkan card dari Database!</small>'
+                        ? '💝 Wishlist kamu masih kosong.<br><small>Tambahkan card dari Database!</small>'
                         : 'Belum ada kartu di sini.'}
                 </p>`;
         }
@@ -111,7 +111,8 @@ function renderCards(data) {
     }
 }
 
-function showSection(section) {
+// 🌟 ENCHANTED FIX: Mengubah showSection menjadi async agar renderProfileSection() dari user.js termuat mulus
+async function showSection(section) {
     currentSection = section;
     currentPage = 1;
 
@@ -183,7 +184,7 @@ function showSection(section) {
 
         if (profileContainer) {
             profileContainer.style.display = 'block';
-            renderProfileSection();
+            await renderProfileSection(); // Memanggil fungsi milik user.js secara asinkron
         }
         statsText.textContent = "Welcome back, Collector!";
 
@@ -303,18 +304,227 @@ function showDetail(idUnique) {
     };
     const rarityColor = rarityColorMap[item.rarity] || '#fff';
 
+    const flagMap = {
+        'korean': '🇰🇷',
+        'japan': '🇯🇵',
+        'china': '🇨🇳',
+        'taiwan': '🇹🇼',
+        'thailand': '🇹🇭',
+        'vietnam': '🇻🇳',
+        'indonesia': '🇮🇩',
+        'malaysia': '🇲🇾',
+        'philippines': '🇵🇭',
+        'singapore': '🇸🇬',
+        'brunei': '🇧🇳',
+        'cambodia': '🇰🇭',
+        'laos': '🇱🇦',
+        'myanmar': '🇲🇲',
+        'east_timor': '🇹🇱',
+        'india': '🇮🇳',
+        'pakistan': '🇵🇰',
+        'bangladesh': '🇧🇩',
+        'sri_lanka': '🇱🇰',
+        'maldives': '🇲🇻',
+        'nepal': '🇳🇵',
+        'bhutan': '🇧🇹',
+        'mongolia': '🇲🇳',
+        'kazakhstan': '🇰🇿',
+        'uzbekistan': '🇺🇿',
+        'turkmenistan': '🇹🇲',
+        'kyrgyzstan': '🇰🇬',
+        'tajikistan': '🇹🇯',
+        'afghanistan': '🇦🇫',
+        'saudi_arabia': '🇸🇦',
+        'uae': '🇦🇪',
+        'qatar': '🇶🇦',
+        'kuwait': '🇰🇼',
+        'bahrain': '🇧🇭',
+        'oman': '🇴🇲',
+        'yemen': '🇾🇪',
+        'turkey': '🇹🇷',
+        'iran': '🇮🇷',
+        'iraq': '🇮🇶',
+        'israel': '🇮🇱',
+        'palestine': '🇵🇸',
+        'jordan': '🇯🇴',
+        'lebanon': '🇱🇧',
+        'syria': '🇸🇾',
+        'cyprus': '🇨🇾',
+        'armenia': '🇦🇲',
+        'azerbaijan': '🇦🇿',
+        'georgia': '🇬🇪',
+        'usa': '🇺🇸',
+        'canada': '🇨🇦',
+        'mexico': '🇲🇽',
+        'cuba': '🇨🇺',
+        'jamaica': '🇯🇲',
+        'haiti': '🇭🇹',
+        'dominican_republic': '🇩🇴',
+        'guatemala': '🇬🇹',
+        'honduras': '🇭🇳',
+        'el_salvador': '🇸🇻',
+        'nicaragua': '🇳🇮',
+        'costa_rica': '🇨🇷',
+        'panama': '🇵🇦',
+        'bahamas': '🇧🇸',
+        'barbados': '🇧🇧',
+        'trinidad_tobago': '🇹🇹',
+        'brazil': '🇧🇷',
+        'argentina': '🇦🇷',
+        'colombia': '🇨🇴',
+        'peru': '🇵🇪',
+        'chile': '🇨🇱',
+        'venezuela': '🇻🇪',
+        'ecuador': '🇪🇨',
+        'bolivia': '🇧🇴',
+        'paraguay': '🇵🇾',
+        'uruguay': '🇺🇾',
+        'guyana': '🇬🇾',
+        'suriname': '🇸🇷',
+        'uk': '🇬🇧',
+        'france': '🇫🇷',
+        'germany': '🇩🇪',
+        'italy': '🇮🇹',
+        'spain': '🇪🇸',
+        'netherlands': '🇳🇱',
+        'belgium': '🇧🇪',
+        'switzerland': '🇨🇭',
+        'ireland': '🇮🇪',
+        'luxembourg': '🇱🇺',
+        'monaco': '🇲🇨',
+        'sweden': '🇸🇪',
+        'norway': '🇳🇴',
+        'denmark': '🇩🇰',
+        'finland': '🇫🇮',
+        'iceland': '🇮🇸',
+        'estonia': '🇪🇪',
+        'latvia': '🇱🇻',
+        'lithuania': '🇱🇹',
+        'russia': '🇷🇺',
+        'ukraine': '🇺🇦',
+        'poland': '🇵🇱',
+        'czech_republic': '🇨🇿',
+        'slovakia': '🇸🇰',
+        'hungary': '🇭🇺',
+        'romania': '🇷🇴',
+        'bulgaria': '🇧🇬',
+        'greece': '🇬🇷',
+        'portugal': '🇵🇹',
+        'austria': '🇦🇹',
+        'belarus': '🇧🇾',
+        'moldova': '🇲🇩',
+        'albania': '🇦🇱',
+        'north_macedonia': '🇲🇰',
+        'serbia': '🇷🇸',
+        'croatia': '🇭🇷',
+        'slovenia': '🇸🇮',
+        'bosnia': '🇧🇦',
+        'montenegro': '🇲🇪',
+        'kosovo': '🇽🇰',
+        'malta': '🇲🇹',
+        'san_marino': '🇸🇲',
+        'vatican': '🇻🇦',
+        'andorra': '🇦🇩',
+        'liechtenstein': '🇱🇮',
+        'egypt': '🇪🇬',
+        'south_africa': '🇿🇦',
+        'nigeria': '🇳🇬',
+        'kenya': '🇰🇪',
+        'morocco': '🇲🇦',
+        'algeria': '🇩🇿',
+        'tunisia': '🇹🇳',
+        'libya': '🇱🇾',
+        'sudan': '🇸🇩',
+        'ethiopia': '🇪🇹',
+        'ghana': '🇬🇭',
+        'ivory_coast': '🇨🇮',
+        'cameroon': '🇨🇲',
+        'senegal': '🇸🇳',
+        'uganda': '🇺🇬',
+        'tanzania': '🇹🇿',
+        'zambia': '🇿🇲',
+        'zimbabwe': '🇿🇼',
+        'angola': '🇦🇴',
+        'mozambique': '🇲🇿',
+        'madagascar': '🇲🇬',
+        'mauritius': '🇲🇺',
+        'seychelles': '🇸🇨',
+        'cape_verde': '🇨🇻',
+        'dr_congo': '🇨🇩',
+        'congo': '🇨🇬',
+        'gabon': '🇬🇦',
+        'mali': '🇲🇱',
+        'niger': '🇳🇪',
+        'chad': '🇹🇩',
+        'sudan_south': '🇸🇸',
+        'somalia': '🇸🇴',
+        'djibouti': '🇩🇯',
+        'eritrea': '🇪🇷',
+        'rwanda': '🇷🇼',
+        'burundi': '🇧🇮',
+        'malawi': '🇲🇼',
+        'namibia': '🇳🇦',
+        'botswana': '🇧🇼',
+        'lesotho': '🇱🇸',
+        'eswatini': '🇸🇿',
+        'gambia': '🇬🇲',
+        'guinea': '🇬🇳',
+        'guinea_bissau': '🇬🇼',
+        'sierra_leone': '🇸🇱',
+        'liberia': '🇱🇷',
+        'burkina_faso': '🇧🇫',
+        'togo': '🇹🇬',
+        'benin': '🇧JIM',
+        'equatorial_guinea': '🇬🇶',
+        'sao_tome': '🇸🇹',
+        'central_african_republic': '🇨🇫',
+        'mauritania': '🇲🇷',
+        'comoros': '🇰🇲',
+        'australia': '🇦🇺',
+        'new_zealand': '🇳🇿',
+        'papua_new_guinea': '🇵🇬',
+        'fiji': '🇫🇯',
+        'solomon_islands': '🇸🇧',
+        'vanuatu': '🇻🇺',
+        'samoa': '🇼🇸',
+        'tonga': '🇹🇴',
+        'kiribati': '🇰🇮',
+        'tuvalu': '🇹🇻',
+        'nauru': '🇳🇷',
+        'palau': '🇵🇼',
+        'micronesia': '🇫🇲',
+        'marshall_islands': '🇲🇭'
+    };
+
+    let flagEmojiHTML = '';
+    let countriesArray = item.origin_country || item.nation || ['korean'];
+
+    if (!Array.isArray(countriesArray)) {
+        countriesArray = [countriesArray];
+    }
+
+    countriesArray.forEach(country => {
+        if (typeof country === 'string') {
+            const flag = flagMap[country.toLowerCase().trim()] || '🌐';
+            flagEmojiHTML += `<span class="member-flag-icon" title="Origin: ${country}">${flag}</span>`;
+        }
+    });
+
+    let positionBadgesHTML = '';
+    if (item.lines && Array.isArray(item.lines)) {
+        positionBadgesHTML = item.lines.map(line => {
+            const cleanLineName = line.replace('_', ' ');
+            return `<span class="badge-line line-${line.toLowerCase()}">${cleanLineName.toUpperCase()}</span>`;
+        }).join('');
+    }
+
     const modal = document.getElementById('pc-modal');
     modal.innerHTML = `
         <div class="modal-content-horizontal" id="modal-content-area">
 
-            <!-- LEFT: Card Image -->
             <div class="modal-left ${rarityClass}">
                 <img src="${item.image}" alt="${item.member}">
-                <div class="modal-left-overlay">
-                    <div class="modal-logo-wrap">
-                        <img src="${item.logo}" alt="${item.group}" class="modal-group-logo">
-                    </div>
-                </div>
+                <div class="modal-left-overlay"></div>
                 <div class="modal-left-actions">
                     <button class="modal-action-icon ${isFav ? 'is-fav' : ''}"
                         onclick="event.stopPropagation(); toggleFavorite('${item.id_unique}'); this.classList.toggle('is-fav')"
@@ -329,20 +539,24 @@ function showDetail(idUnique) {
                 </div>
             </div>
 
-            <!-- RIGHT: Info -->
             <div class="modal-right">
                 <button class="modal-close-btn" onclick="closeModal()">✕</button>
 
-                <!-- Rarity pill -->
+                <div class="modal-logo-wrap">
+                    <img src="${item.logo}" alt="${item.group}" class="modal-group-logo">
+                </div>
+
                 <div class="modal-rarity-pill" style="background:${rarityColor}22;border-color:${rarityColor}66;color:${rarityColor}">
                     ✦ ${item.rarity}
                 </div>
 
-                <!-- Name & group -->
-                <h2 class="member-name">${item.member}</h2>
+                <h2 class="member-name">${item.member} ${flagEmojiHTML}</h2>
                 <p class="group-name">${item.group} <span class="group-dot">·</span> Official Collection</p>
 
-                <!-- Detail grid -->
+                <div class="member-position-wrapper">
+                    ${positionBadgesHTML}
+                </div>
+
                 <div class="detail-grid">
                     <div class="detail-item">
                         <span class="detail-label">Era</span>
@@ -362,7 +576,6 @@ function showDetail(idUnique) {
                     </div>
                 </div>
 
-                <!-- Member stats bar -->
                 <div class="modal-member-stat">
                     <div class="modal-member-stat-label">
                         <span>Cards of ${item.member}</span>
@@ -373,7 +586,6 @@ function showDetail(idUnique) {
                     </div>
                 </div>
 
-                <!-- Action buttons -->
                 <div class="modal-actions">
                     <button class="btn-download" onclick="downloadCard('${item.id_unique}')">
                         <span>⬇</span> Download
@@ -472,5 +684,100 @@ document.addEventListener('mousemove', (e) => {
     document.body.appendChild(spark);
     setTimeout(() => spark.remove(), 800);
 });
+
+const acvTitleMap = {
+    "acv_total_1": "🐣 First Step",
+    "acv_total_10": "📦 Newbie Collector",
+    "acv_total_30": "🎵 K-POP Fans",
+    "acv_total_50": "✨ Stan Account",
+    "acv_total_100": "💎 Elite Collector",
+    "acv_total_300": "🔥 PC Addict",
+    "acv_total_500": "👑 God Collector",
+    "acv_total_all": "🌌 Tuan Tanah Kwangya",
+    "acv_sm_10": "pink-blood SM Stan",
+    "acv_sm_25": "🏢 Pemegang Saham SM",
+    "acv_sm_all": "🏛️ Penguasa Gedung SM",
+    "acv_yg_10": "👑 YG Stan",
+    "acv_yg_15": "🎤 Hip-Hop Dynasty",
+    "acv_yg_all": "💎 YG Dungeon Escape",
+    "acv_jyp_10": "🕺 JYP Stan",
+    "acv_jyp_25": "🌊 Organic Wave",
+    "acv_jyp_all": "🎧 JYP Organic Kitchen",
+    "acv_hybe_10": "🎪 HYBE Stan",
+    "acv_hybe_25": "🚀 Corporate Monopoly",
+    "acv_hybe_all": "🎯 We Believe In Music",
+    "acv_other_10": "💎 Nugu Supporter",
+    "acv_other_25": "🌱 Hidden Gem Protector",
+    "acv_other_all": "🚀 Indie Pride",
+    "acv_rare_common_10": "📸 Selca Enjoyer",
+    "acv_rare_common_20": "🖼️ Galeri Selfie",
+    "acv_rare_common_all": "📁 Raja Selca Khazanah",
+    "acv_rare_uncommon_10": "🌿 Rookie Era",
+    "acv_rare_uncommon_20": "🎵 Bersemi di Panggung",
+    "acv_rare_uncommon_all": "🍀 Master of Debut",
+    "acv_rare_rare_10": "💎 Rare Hunter",
+    "acv_rare_rare_20": "💠 Koleksi Berkilau",
+    "acv_rare_rare_all": "🛸 Rare Overload",
+    "acv_rare_sr_10": "🔮 Super Rare Specialist",
+    "acv_rare_sr_20": "✨ Aura Premium",
+    "acv_rare_sr_all": "🌟 Dinasti Super Rare",
+    "acv_rare_ur_first": "🔥 Pecah Telur Hoki",
+    "acv_rare_ur_10": "⚡ Ultra Rare Magnet",
+    "acv_rare_ur_20": "💥 Flexing Rarity",
+    "acv_rare_ur_all": "☄️ Penguasa Angkasa UR",
+    "acv_rare_lim_first": "🌌 Tiket Terbatas",
+    "acv_rare_lim_10": "🪐 Limited Edition",
+    "acv_rare_lim_20": "🛡️ Benteng Keberuntungan",
+    "acv_rare_lim_all": "⌛ Kolektor Garis Langka",
+    "acv_rare_sec_first": "👁️ Menembus Mitos",
+    "acv_rare_sec_10": "🔮 Penjaga Rahasia",
+    "acv_rare_sec_20": "🧿 Iluminati Gacha",
+    "acv_rare_sec_all": "👁️‍🗨️ Master of Mystical Rate",
+    "acv_line_japan": "🌸 Japan Line Complete",
+    "acv_line_global": "🌏 Passport Squad",
+    "acv_line_korean": "🇰🇷 Hallyu Wave Royalty",
+    "acv_complete_g1": "🎤 OT Complete!",
+    "acv_complete_g5": "🗂️ Multi-Fandom Stan",
+    "acv_complete_g10": "🎼 K-POP Mastermind",
+    "acv_line_visual": "✨ Visual Attack!",
+    "acv_line_vocal": "🎤 The Golden Voice",
+    "acv_line_maknae": "🍼 Bontot Kesayangan",
+    "acv_line_leader": "⚔️ Captain of the Ship",
+    "acv_line_rapper": "🔥 Spitfire Verse",
+    "acv_line_center": "🎯 Center of Attention",
+    "acv_line_dancer_all": "👑 Main Dancer Synergy",
+    "acv_pull_rainbow": "🌈 The Rainbow Pull",
+    "acv_pull_lucky5": "🍀 Lucky Five",
+    "sec_dup_jamaah": "🤡 Duplikat Berjamaah",
+    "sec_lucky_gacha": "🎰 Wonyoung Blessing",
+    "sec_unlucky_gacha": "💀 Korban Sakit Hati",
+    "sec_multipull_sr5": "👑 Kesurupan Dewa Gacha",
+    "sec_single_believer": "🛐 Single Pull Believer",
+    "sec_bias_loyal": "❤️ Setia pada Bias",
+    "sec_identity_crisis": "🎭 Krisis Identitas",
+    "sec_first_print": "🥇 The First Print"
+};
+
+function triggerAchievementPopup(id) {
+    const title = acvTitleMap[id] || "🏆 Pencapaian Baru!";
+
+    const popup = document.createElement('div');
+    popup.className = 'achievement-popup-box';
+    popup.innerHTML = `
+        <div class="acv-icon-wrap">🏆</div>
+        <div class="acv-text-wrap">
+            <h4>Achievement Unlocked!</h4>
+            <p>${title}</p>
+        </div>
+    `;
+
+    document.body.appendChild(popup);
+    setTimeout(() => popup.classList.add('slide-in'), 100);
+
+    setTimeout(() => {
+        popup.classList.remove('slide-in');
+        setTimeout(() => popup.remove(), 600);
+    }, 4000);
+}
 
 loadData();

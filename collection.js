@@ -110,15 +110,12 @@ function injectProgressUI() {
     const rarityProgress = {};
     rarities.forEach(function(r) {
         const total = pcData.filter(function(c) { return c.rarity === r; }).length;
-
         const owned = new Set(
             myCollection.filter(function(c) {
                 const cardRarity = c.rankLabel || c.rarity;
                 return cardRarity === r;
-            })
-            .map(function(c) { return c.group + '|' + c.member + '|' + c.style; })
+            }).map(function(c) { return c.group + '|' + c.member + '|' + c.style; })
         ).size;
-
         rarityProgress[r] = { total: total, owned: Math.min(owned, total) };
     });
 
@@ -128,47 +125,52 @@ function injectProgressUI() {
 
     const header = document.createElement('div');
     header.className = 'progress-header-bar';
-    header.innerHTML =
-        '<div class="progress-header-left">' +
-        '<span class="progress-header-icon">📊</span>' +
-        '<div>' +
-        '<div class="progress-header-title">Collection Progress</div>' +
-        '<div class="progress-header-sub">' + ownedKeys.size + ' dari ' + totalUnique + ' unique cards · ' + overallPct + '% complete</div>' +
-        '</div>' +
-        '</div>' +
-        '<div class="progress-header-right">' +
-        '<div class="progress-overall-ring" style="--pct:' + overallPct + '">' +
-        '<svg viewBox="0 0 36 36">' +
-        '<circle class="ring-bg" cx="18" cy="18" r="15.9"/>' +
-        '<circle class="ring-fill" cx="18" cy="18" r="15.9" style="stroke-dasharray:' + overallPct + ' 100"/>' +
-        '</svg>' +
-        '<span class="ring-label">' + overallPct + '%</span>' +
-        '</div>' +
-        '<button class="progress-toggle-btn" onclick="toggleProgressPanel()" id="progress-toggle-btn">▼</button>' +
-        '</div>';
+    header.innerHTML = `
+        <div class="progress-header-left">
+            <span class="progress-header-icon">📊</span>
+            <div>
+                <div class="progress-header-title">Collection Analytics Dashboard</div>
+                <div class="progress-header-sub">${ownedKeys.size} dari ${totalUnique} unique cards · ${overallPct}% complete</div>
+            </div>
+        </div>
+        <div class="progress-header-right">
+            <div class="progress-overall-ring" style="--pct:${overallPct}">
+                <svg viewBox="0 0 36 36">
+                    <circle class="ring-bg" cx="18" cy="18" r="15.9"/>
+                    <circle class="ring-fill" cx="18" cy="18" r="15.9" style="stroke-dasharray:${overallPct} 100"/>
+                </svg>
+                <span class="ring-label">${overallPct}%</span>
+            </div>
+            <button class="progress-toggle-btn" onclick="toggleProgressPanel()" id="progress-toggle-btn">▼</button>
+        </div>`;
     panel.appendChild(header);
 
     const body = document.createElement('div');
     body.className = 'progress-panel-body';
     body.id = 'progress-panel-body';
 
-    body.innerHTML =
-        '<div class="progress-tabs">' +
-        '<button class="progress-tab active" onclick="switchProgressTab(\'rarity\', this)">By Rarity</button>' +
-        '<button class="progress-tab" onclick="switchProgressTab(\'group\', this)">By Group</button>' +
-        '<button class="progress-tab" onclick="switchProgressTab(\'analytics\', this)">📊 Analytics</button>' +
-        '</div>' +
-        '<div id="progress-tab-rarity" class="progress-tab-content active">' +
-        buildRarityRows(rarities, rarityProgress, rarityColors, rarityIcons) +
-        '</div>' +
-        '<div id="progress-tab-group" class="progress-tab-content">' +
-        buildGroupCards(sortedGroups) +
-        '</div>' +
-        '<div id="progress-tab-analytics" class="progress-tab-content">' +
-        '<div class="chart-wrapper" style="max-width:340px; margin:20px auto; position:relative; height:340px;">' +
-        '<canvas id="collectionChart"></canvas>' +
-        '</div>' +
-        '</div>';
+    // 🌟 MENAMBAHKAN TAB BARU: BY ADVANCED STATS
+    body.innerHTML = `
+        <div class="progress-tabs">
+            <button class="progress-tab active" onclick="switchProgressTab('rarity', this)">By Rarity</button>
+            <button class="progress-tab" onclick="switchProgressTab('group', this)">By Group</button>
+            <button class="progress-tab" onclick="switchProgressTab('advanced_stats', this)">✨ Advanced Stats</button>
+            <button class="progress-tab" onclick="switchProgressTab('analytics', this)">📊 Analytics Chart</button>
+        </div>
+        <div id="progress-tab-rarity" class="progress-tab-content active">
+            ${buildRarityRows(rarities, rarityProgress, rarityColors, rarityIcons)}
+        </div>
+        <div id="progress-tab-group" class="progress-tab-content">
+            ${buildGroupCards(sortedGroups)}
+        </div>
+        <div id="progress-tab-advanced_stats" class="progress-tab-content">
+            ${buildAdvancedStatsRows(ownedKeys)}
+        </div>
+        <div id="progress-tab-analytics" class="progress-tab-content">
+            <div class="chart-wrapper" style="max-width:340px; margin:20px auto; position:relative; height:340px;">
+                <canvas id="collectionChart"></canvas>
+            </div>
+        </div>`;
 
     panel.appendChild(body);
     container.parentNode.insertBefore(panel, container);
@@ -194,16 +196,9 @@ function buildRarityRows(rarities, rarityProgress, rarityColors, rarityIcons) {
         const color = rarityColors[r];
         const icon = rarityIcons[r] || '✦';
         html += '<div class="rarity-progress-item" style="--rarity-color:' + color + '">';
-        html += '<div class="rarity-progress-left">';
-        html += '<span class="rarity-icon">' + icon + '</span>';
-        html += '<span class="rarity-name" style="color:' + color + '">' + r + '</span>';
-        html += '</div>';
-        html += '<div class="rarity-progress-bar-wrap">';
-        html += '<div class="progress-bar-bg"><div class="progress-bar-fill" data-width="' + pct + '%" style="width:0%;background:' + color + '"></div></div>';
-        html += '</div>';
-        html += '<div class="rarity-progress-stat">';
-        html += '<span class="rarity-stat-owned">' + owned + '</span><span class="rarity-stat-sep">/</span><span class="rarity-stat-total">' + total + '</span>';
-        html += '</div>';
+        html += '<div class="rarity-progress-left"><span class="rarity-icon">' + icon + '</span><span class="rarity-name" style="color:' + color + '">' + r + '</span></div>';
+        html += '<div class="rarity-progress-bar-wrap"><div class="progress-bar-bg"><div class="progress-bar-fill" data-width="' + pct + '%" style="width:0%;background:' + color + '"></div></div></div>';
+        html += '<div class="rarity-progress-stat"><span class="rarity-stat-owned">' + owned + '</span><span class="rarity-stat-sep">/</span><span class="rarity-stat-total">' + total + '</span></div>';
         html += '</div>';
     });
     html += '</div>';
@@ -220,18 +215,96 @@ function buildGroupCards(sortedGroups) {
         html += '<div class="group-progress-card' + (isComplete ? ' group-complete' : '') + '">';
         html += '<div class="group-progress-header">';
         html += '<div class="group-logo-wrap"><img src="' + data.logo + '" alt="' + grp + '" class="group-logo-sm"></div>';
-        html += '<div class="group-progress-info"><span class="group-progress-name">' + grp + '</span>';
-        html += '<span class="group-progress-agency">' + (data.agency || '') + '</span></div>';
+        html += '<div class="group-progress-info"><span class="group-progress-name">' + grp + '</span><span class="group-progress-agency">' + (data.agency || '') + '</span></div>';
         html += '<span class="group-progress-pct' + (isComplete ? ' pct-complete' : '') + '">' + pct + '%</span>';
         html += '</div>';
         html += '<div class="progress-bar-bg"><div class="progress-bar-fill" data-width="' + pct + '%" style="width:0%;background:linear-gradient(90deg,var(--primary),var(--secondary))"></div></div>';
         html += '<div class="group-progress-foot"><span>' + data.owned + ' / ' + data.total + ' cards</span>';
         if (isComplete) html += '<span class="group-complete-badge">✓ COMPLETE</span>';
-        html += '</div>';
-        html += '</div>';
+        html += '</div></div>';
     });
     html += '</div>';
     return html;
+}
+
+// 🌟 FUNGSI BARU: MENGAL KULASI STATISTIK LANJUTAN BERDASARKAN GENDER, NEGARA, DAN POSITION LINE
+function buildAdvancedStatsRows(ownedKeys) {
+    // Kumpulkan data ke dalam kategori terpisah
+    const stats = {
+        gender: { girlgroup: { t: 0, o: 0 }, boygroup: { t: 0, o: 0 } },
+        nation: {},
+        position: {}
+    };
+
+    pcData.forEach(card => {
+        const cardKey = `${card.group}|${card.member}|${card.style}`;
+        const isOwned = ownedKeys.has(cardKey);
+
+        // 1. Hitung Gender Type
+        const genType = card.girlgroup || card.boygroup || card.type || '';
+        if (genType.toLowerCase().includes('girl')) {
+            stats.gender.girlgroup.t++;
+            if (isOwned) stats.gender.girlgroup.o++;
+        } else if (genType.toLowerCase().includes('boy')) {
+            stats.gender.boygroup.t++;
+            if (isOwned) stats.gender.boygroup.o++;
+        }
+
+        // 2. Hitung Negara (Nationality)
+        let nationsArr = card.origin_country || card.nation || ['korean'];
+        if (!Array.isArray(nationsArr)) nationsArr = [nationsArr];
+        nationsArr.forEach(nat => {
+            const n = nat.toLowerCase().trim();
+            if (!stats.nation[n]) stats.nation[n] = { t: 0, o: 0 };
+            stats.nation[n].t++;
+            if (isOwned) stats.nation[n].o++;
+        });
+
+        // 3. Hitung Posisi Lines
+        const posLines = card.lines || [];
+        posLines.forEach(line => {
+            const l = line.toLowerCase().trim();
+            if (!stats.position[l]) stats.position[l] = { t: 0, o: 0 };
+            stats.position[l].t++;
+            if (isOwned) stats.position[l].o++;
+        });
+    });
+
+    let html = '<div class="rarity-progress-grid" style="gap:20px; padding:10px 5px;">';
+
+    // Cetak Sub-Seksi Gender
+    html += '<div style="grid-column:1/-1; font-size:12px; font-weight:800; color:var(--primary); margin-bottom:-10px;">✦ BY GROUP GENDER SYSTEM</div>';
+    Object.entries(stats.gender).forEach(([k, val]) => {
+        const pct = val.t > 0 ? Math.round((val.o / val.t) * 100) : 0;
+        html += renderRowHTML(`👥 ${k.toUpperCase()}`, pct, val.o, val.t, 'var(--primary)');
+    });
+
+    // Cetak Sub-Seksi Negara
+    html += '<div style="grid-column:1/-1; font-size:12px; font-weight:800; color:#ffd700; margin-top:10px; margin-bottom:-10px;">✦ BY NATIONALITY ORIGIN</div>';
+    Object.entries(stats.nation).sort((a, b) => b[1].t - a[1].t).forEach(([k, val]) => {
+        const pct = val.t > 0 ? Math.round((val.o / val.t) * 100) : 0;
+        html += renderRowHTML(`🌍 ${k.toUpperCase()}`, pct, val.o, val.t, '#ffd700');
+    });
+
+    // Cetak Sub-Seksi Posisi Line
+    html += '<div style="grid-column:1/-1; font-size:12px; font-weight:800; color:var(--secondary); margin-top:10px; margin-bottom:-10px;">✦ BY MEMBER POSITION LINE</div>';
+    Object.entries(stats.position).sort((a, b) => b[1].t - a[1].t).forEach(([k, val]) => {
+        const pct = val.t > 0 ? Math.round((val.o / val.t) * 100) : 0;
+        html += renderRowHTML(`🎤 ${k.replace('_',' ').toUpperCase()}`, pct, val.o, val.t, 'var(--secondary)');
+    });
+
+    html += '</div>';
+    return html;
+}
+
+function renderRowHTML(name, pct, owned, total, color) {
+    return `
+        <div class="rarity-progress-item" style="--rarity-color:${color}; margin-bottom: -5px;">
+            <div class="rarity-progress-left" style="width:140px;"><span class="rarity-name" style="color:#fff; font-size:12px;">${name}</span></div>
+            <div class="rarity-progress-bar-wrap"><div class="progress-bar-bg"><div class="progress-bar-fill" data-width="${pct}%" style="width:0%; background:${color}"></div></div></div>
+            <div class="rarity-progress-stat"><span class="rarity-stat-owned" style="color:${color}">${owned}</span><span class="rarity-stat-sep">/</span><span class="rarity-stat-total">${total}</span></div>
+        </div>
+    `;
 }
 
 function switchProgressTab(tab, btn) {
@@ -241,12 +314,10 @@ function switchProgressTab(tab, btn) {
     var content = document.getElementById('progress-tab-' + tab);
     if (content) {
         content.classList.add('active');
-
         content.querySelectorAll('.progress-bar-fill').forEach(function(bar) {
             bar.style.width = '0%';
             setTimeout(function() { bar.style.width = bar.dataset.width; }, 50);
         });
-
         if (tab === 'analytics') {
             setTimeout(renderCollectionChart, 50);
         }
@@ -282,7 +353,7 @@ function showToast(msg) {
     toast.textContent = msg;
     document.body.appendChild(toast);
 
-    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => toast.add('show'), 10);
     setTimeout(() => {
         toast.classList.remove('show');
         setTimeout(() => toast.remove(), 300);

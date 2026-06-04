@@ -75,27 +75,37 @@
             <div class="filter-group">
                 <button class="filter-btn active" data-agency="all">All Agency</button>
                 <button class="filter-btn btn-logo" data-agency="SM">
-                    <img src="assets/logos/sm.png" alt="SM" class="agency-logo">
+                    <img src="assets/logos/agency/sm.png" alt="SM" class="agency-logo">
                 </button>
                 <button class="filter-btn btn-logo" data-agency="YG">
-                    <img src="assets/logos/yg.png" alt="YG" class="agency-logo">
+                    <img src="assets/logos/agency/yg.png" alt="YG" class="agency-logo">
                 </button>
                 <button class="filter-btn btn-logo" data-agency="JYP">
-                    <img src="assets/logos/jyp.png" alt="JYP" class="agency-logo">
+                    <img src="assets/logos/agency/jyp.png" alt="JYP" class="agency-logo">
                 </button>
                 <button class="filter-btn btn-logo" data-agency="HYBE">
-                    <img src="assets/logos/hybe.png" alt="HYBE" class="agency-logo">
+                    <img src="assets/logos/agency/hybe.png" alt="HYBE" class="agency-logo">
                 </button>
                 <button class="filter-btn" data-agency="other">Other</button>
             </div>
         </div>
 
         <div class="filter-sort-wrapper">
-            <select id="sort-pc" onchange="applyCurrentFilter()">
-                <option value="newest">Newest First</option>
-                <option value="az">A - Z</option>
-                <option value="rarity-high">Highest Rarity</option>
-            </select>
+
+            <div class="custom-dropdown" id="sort-dropdown">
+                <div class="dropdown-selected">
+                    <span>Newest First</span>
+                    <span class="dropdown-arrow">▼</span>
+                </div>
+                <div class="dropdown-options">
+                    <div class="dropdown-opt active" data-value="newest">Newest First</div>
+                    <div class="dropdown-opt" data-value="az">A - Z</div>
+                    <div class="dropdown-opt" data-value="za">Z - A</div>
+                    <div class="dropdown-opt" data-value="rarity-high">Highest Rarity</div>
+                    <div class="dropdown-opt" data-value="oldest">Oldest First</div>
+                </div>
+            </div>
+
         </div>
     </header>
 

@@ -2,6 +2,12 @@ let currentActiveFilter = 'all';
 let currentGroupFilter = 'all';
 let suggestionActive = -1;
 let suggestionItems = [];
+let currentSortMode = 'newest';
+
+// 🌟 VARIABEL FILTER BARU
+let currentGenderFilter = 'all'; // 'all', 'girlgroup', 'boygroup'
+let currentNationFilter = 'all'; // 'all', 'korean', 'japan', 'china', dll
+let currentPositionFilter = 'all'; // 'all', 'vocal', 'dancer', 'visual', 'leader', dll
 
 const searchInput = document.getElementById('search-input');
 const searchClear = document.getElementById('search-clear');
@@ -118,6 +124,7 @@ function renderSuggestions(query) {
 }
 
 function closeSuggestions() {
+    searchSuggestions.classList.remove('remove');
     searchSuggestions.classList.remove('open');
     searchSuggestions.innerHTML = '';
     searchWrapper.classList.add('no-dropdown');
@@ -145,46 +152,64 @@ function updateClearBtn() {
     searchClear.classList.toggle('visible', hasValue);
 }
 
-searchClear.addEventListener('click', () => {
-    clearSearch();
-    searchInput.focus();
-});
+if (searchClear) {
+    searchClear.addEventListener('click', () => {
+        clearSearch();
+        searchInput.focus();
+    });
+}
 
 function updateChips() {
     const kw = searchInput.value.trim();
     searchChips.innerHTML = '';
-    if (!kw) return;
 
-    const chip = document.createElement('div');
-    chip.className = 'search-chip';
-    const memberMatch = kw.match(/^(.+)\s\((.+)\)$/);
-    if (memberMatch) {
-        chip.innerHTML = `⭐ <strong>${memberMatch[1]}</strong> <span style="opacity:0.5">· ${memberMatch[2]}</span>
-            <button class="search-chip-remove" onclick="clearSearch()" title="Hapus filter">✕</button>`;
-    } else {
-        chip.innerHTML = `🔍 <strong>${kw}</strong>
-            <button class="search-chip-remove" onclick="clearSearch()" title="Hapus filter">✕</button>`;
+    // Satukan barisan teks informasi filter yang aktif ke dlm chip bunderan kecil
+    let chipHTML = '';
+    if (kw) {
+        const memberMatch = kw.match(/^(.+)\s\((.+)\)$/);
+        chipHTML += `<div class="search-chip">🔍 <strong>${memberMatch ? memberMatch[1] : kw}</strong>${memberMatch ? ' <span style="opacity:0.5">· '+memberMatch[2]+'</span>' : ''}<button class="search-chip-remove" onclick="clearSearch()">✕</button></div>`;
     }
-    searchChips.appendChild(chip);
+    if (currentGenderFilter !== 'all') {
+        chipHTML += `<div class="search-chip" style="border-color:var(--primary)">👥 <strong>${currentGenderFilter.toUpperCase()}</strong><button class="search-chip-remove" onclick="setAdvancedFilter('gender','all')">✕</button></div>`;
+    }
+    if (currentNationFilter !== 'all') {
+        chipHTML += `<div class="search-chip" style="border-color:#ffd700">🌍 <strong>${currentNationFilter.toUpperCase()}</strong><button class="search-chip-remove" onclick="setAdvancedFilter('nation','all')">✕</button></div>`;
+    }
+    if (currentPositionFilter !== 'all') {
+        chipHTML += `<div class="search-chip" style="border-color:var(--secondary)">🎤 <strong>${currentPositionFilter.toUpperCase()}</strong><button class="search-chip-remove" onclick="setAdvancedFilter('position','all')">✕</button></div>`;
+    }
+    searchChips.innerHTML = chipHTML;
 }
 
 function clearSearch() {
     searchInput.value = '';
     currentSearchKeyword = '';
+    currentGenderFilter = 'all';
+    currentNationFilter = 'all';
+    currentPositionFilter = 'all';
+
     updateClearBtn();
     closeSuggestions();
     updateChips();
     updateMeta(null);
 
-    if (currentSection === 'collection') {
-        filteredData = [...myCollection];
-        updateDisplay();
-    } else if (currentSection === 'favorite') {
-        filteredData = [...myFavorites];
-        updateDisplay();
-    } else if (currentSection === 'wishlist') {
-        filteredData = [...myWishlist];
-        updateDisplay();
+    const advBtn = document.getElementById('adv-filter-btn');
+    if (advBtn) advBtn.classList.remove('active');
+
+    if (typeof currentSection !== 'undefined') {
+        if (currentSection === 'collection') {
+            filteredData = [...myCollection];
+            updateDisplay();
+        } else if (currentSection === 'favorite') {
+            filteredData = [...myFavorites];
+            updateDisplay();
+        } else if (currentSection === 'wishlist') {
+            filteredData = [...myWishlist];
+            updateDisplay();
+        } else {
+            resetAgencyFilter();
+            applyCurrentFilter();
+        }
     } else {
         resetAgencyFilter();
         applyCurrentFilter();
@@ -192,15 +217,15 @@ function clearSearch() {
 }
 
 function updateMeta(count) {
-    if (count === null || searchInput.value.trim() === '') {
+    if (count === null || (searchInput.value.trim() === '' && currentGenderFilter === 'all' && currentNationFilter === 'all' && currentPositionFilter === 'all')) {
         searchMeta.innerHTML = '';
         return;
     }
-    const kw = searchInput.value.trim();
+    const kw = searchInput.value.trim() || 'Filter Aktif';
     if (count === 0) {
-        searchMeta.innerHTML = `Tidak ada hasil untuk "<span class="meta-highlight">${kw}</span>" <span class="meta-clear" onclick="clearSearch()">Hapus</span>`;
+        searchMeta.innerHTML = `Tidak ada hasil untuk kriteria pencarian ini. <span class="meta-clear" onclick="clearSearch()">Hapus Semua Filter</span>`;
     } else {
-        searchMeta.innerHTML = `Menampilkan <span class="meta-highlight">${count}</span> kartu untuk "<span class="meta-highlight">${kw}</span>" <span class="meta-clear" onclick="clearSearch()">Hapus</span>`;
+        searchMeta.innerHTML = `Menampilkan <span class="meta-highlight">${count}</span> kartu sesuai filter <span class="meta-clear" onclick="clearSearch()">Hapus Semua</span>`;
     }
 }
 
@@ -211,124 +236,91 @@ function resetAgencyFilter() {
     if (allBtn) allBtn.classList.add('active');
 }
 
-searchInput.addEventListener('keydown', (e) => {
-    const items = searchSuggestions.querySelectorAll('.suggestion-item');
-    if (!items.length) return;
+// 🌟 MODAL PANEL BARU: MODAL FILTER ADVANCED (GENDER, NEGARA, DAN LINE POSITION)
+function openAdvancedFilterModal() {
+    if (document.getElementById('adv-filter-modal')) return;
 
-    if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        suggestionActive = (suggestionActive + 1) % items.length;
-        items.forEach((el, i) => el.classList.toggle('active', i === suggestionActive));
-    } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        suggestionActive = (suggestionActive - 1 + items.length) % items.length;
-        items.forEach((el, i) => el.classList.toggle('active', i === suggestionActive));
-    } else if (e.key === 'Enter') {
-        e.preventDefault();
-        if (suggestionActive >= 0 && suggestionItems[suggestionActive]) {
-            const s = suggestionItems[suggestionActive];
-            selectSuggestion(s.type, s.value, s.group);
-        } else {
-            closeSuggestions();
-            updateChips();
-            applyCurrentFilter();
-        }
-    } else if (e.key === 'Escape') {
-        closeSuggestions();
-        searchInput.blur();
-    }
-});
+    // Kumpulkan opsi kewarganegaraan & lines secara dinamis dari database
+    const nations = [...new Set(pcData.flatMap(c => c.origin_country || c.nation || ['korean']))].filter(Boolean).sort();
+    const lines = [...new Set(pcData.flatMap(c => c.lines || []))].filter(Boolean).sort();
 
-document.addEventListener('keydown', (e) => {
-    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        searchInput.focus();
-        searchInput.select();
-    }
-});
-
-searchInput.addEventListener('input', (e) => {
-    currentSearchKeyword = e.target.value.toLowerCase().trim();
-    updateClearBtn();
-    renderSuggestions(e.target.value.trim());
-
-    if (currentSection === 'collection') {
-        filteredData = myCollection.filter(item => item.member.toLowerCase().includes(currentSearchKeyword));
-        currentPage = 1;
-        updateDisplay();
-    } else if (currentSection === 'favorite') {
-        filteredData = myFavorites.filter(item => item.member.toLowerCase().includes(currentSearchKeyword));
-        currentPage = 1;
-        updateDisplay();
-    } else if (currentSection === 'wishlist') {
-        filteredData = myWishlist.filter(item => item.member.toLowerCase().includes(currentSearchKeyword));
-        currentPage = 1;
-        updateDisplay();
-    } else if (currentSection === 'all') {
-        resetAgencyFilter();
-        applyCurrentFilter();
-    }
-});
-
-document.addEventListener('click', (e) => {
-    if (!e.target.closest('.search-container')) {
-        closeSuggestions();
-    }
-});
-
-const popularSearches = ['aespa', 'NewJeans', 'IVE', 'BTS', 'TWICE', 'Karina', 'Wonyoung', 'Winter'];
-
-searchInput.addEventListener('focus', () => {
-    const val = searchInput.value.trim();
-    if (val) {
-        renderSuggestions(val);
-    } else {
-        renderPopularSearches();
-    }
-});
-
-function renderPopularSearches() {
-    const html = `
-        <div class="suggestion-section-label">✦ Populer</div>
-        ${popularSearches.map(term => `
-            <div class="suggestion-item suggestion-popular" onclick="applyPopularSearch('${term}')">
-                <div class="suggestion-item-icon" style="background:rgba(255,0,122,0.08);">
-                    <span style="font-size:14px">🔥</span>
-                </div>
-                <div class="suggestion-item-text">
-                    <div class="suggestion-item-name">${term}</div>
-                </div>
-                <span class="suggestion-count" style="color:rgba(255,0,122,0.5);">trending</span>
+    const modal = document.createElement('div');
+    modal.id = 'adv-filter-modal';
+    modal.className = 'group-filter-modal'; // Menggunakan basis styling modal agar seragam
+    modal.innerHTML = `
+        <div class="gfm-backdrop" onclick="closeAdvancedFilterModal()"></div>
+        <div class="gfm-panel" style="max-width: 420px; padding: 22px;">
+            <div class="gfm-header" style="margin-bottom: 20px;">
+                <h3 style="color:#fff; font-weight:800; font-size:16px; letter-spacing:0.5px;">⚙️ Advanced Database Filter</h3>
+                <button class="gfm-close" onclick="closeAdvancedFilterModal()">×</button>
             </div>
-        `).join('')}
+            
+            <div style="display:flex; flex-direction:column; gap:16px;">
+                <!-- Opsi Filter Jenis Grup -->
+                <div>
+                    <label style="font-size:11px; text-transform:uppercase; color:var(--secondary); font-weight:700; display:block; margin-bottom:8px;">👥 Group Type / Gender</label>
+                    <div style="display:flex; gap:8px;">
+                        <button class="filter-btn ${currentGenderFilter === 'all' ? 'active' : ''}" style="flex:1; padding:6px; font-size:12px;" onclick="setAdvancedFilter('gender','all')">All</button>
+                        <button class="filter-btn ${currentGenderFilter === 'girlgroup' ? 'active' : ''}" style="flex:1; padding:6px; font-size:12px;" onclick="setAdvancedFilter('gender','girlgroup')">Girlgroup</button>
+                        <button class="filter-btn ${currentGenderFilter === 'boygroup' ? 'active' : ''}" style="flex:1; padding:6px; font-size:12px;" onclick="setAdvancedFilter('gender','boygroup')">Boygroup</button>
+                    </div>
+                </div>
+
+                <!-- Opsi Filter Negara Asal -->
+                <div>
+                    <label style="font-size:11px; text-transform:uppercase; color:var(--secondary); font-weight:700; display:block; margin-bottom:8px;">🌍 Origin Nationality</label>
+                    <select id="adv-nation-select" class="user-bias-rank-select" style="width:100%; max-width:none;" onchange="setAdvancedFilter('nation', this.value)">
+                        <option value="all" ${currentNationFilter === 'all' ? 'selected' : ''}>-- Semua Negara --</option>
+                        ${nations.map(n => `<option value="${n}" ${currentNationFilter === n ? 'selected' : ''}>${n.toUpperCase()}</option>`).join('')}
+                    </select>
+                </div>
+
+                <!-- Opsi Filter Posisi / Lines -->
+                <div>
+                    <label style="font-size:11px; text-transform:uppercase; color:var(--secondary); font-weight:700; display:block; margin-bottom:8px;">🎤 Member Line / Position</label>
+                    <select id="adv-position-select" class="user-bias-rank-select" style="width:100%; max-width:none;" onchange="setAdvancedFilter('position', this.value)">
+                        <option value="all" ${currentPositionFilter === 'all' ? 'selected' : ''}>-- Semua Opsi Posisi Line --</option>
+                        ${lines.map(l => `<option value="${l}" ${currentPositionFilter === l ? 'selected' : ''}>${l.replace('_',' ').toUpperCase()}</option>`).join('')}
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn-save-profile" style="width:100%; margin-top:25px; padding:10px;" onclick="closeAdvancedFilterModal()">APPLY FILTERS</button>
+        </div>
     `;
-    searchSuggestions.innerHTML = html;
-    searchSuggestions.classList.add('open');
-    searchWrapper.classList.remove('no-dropdown');
+    document.body.appendChild(modal);
+    requestAnimationFrame(() => modal.classList.add('active'));
 }
 
-function applyPopularSearch(term) {
-    searchInput.value = term;
-    currentSearchKeyword = term.toLowerCase();
-    updateClearBtn();
-    closeSuggestions();
-    updateChips();
-    if (currentSection === 'all') {
-        resetAgencyFilter();
-        applyCurrentFilter();
+function closeAdvancedFilterModal() {
+    const modal = document.getElementById('adv-filter-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        setTimeout(() => modal.remove(), 250);
     }
-    searchInput.blur();
 }
 
-document.querySelectorAll('.filter-group .filter-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        const button = e.currentTarget;
-        document.querySelectorAll('.filter-group .filter-btn').forEach(b => b.classList.remove('active'));
-        button.classList.add('active');
-        currentActiveFilter = button.dataset.agency;
-        applyCurrentFilter();
-    });
-});
+function setAdvancedFilter(type, value) {
+    if (type === 'gender') currentGenderFilter = value;
+    if (type === 'nation') currentNationFilter = value;
+    if (type === 'position') currentPositionFilter = value;
+
+    const advBtn = document.getElementById('adv-filter-btn');
+    if (advBtn) {
+        const isFiltering = currentGenderFilter !== 'all' || currentNationFilter !== 'all' || currentPositionFilter !== 'all';
+        advBtn.classList.toggle('active', isFiltering);
+    }
+
+    applyCurrentFilter();
+    updateChips();
+    
+    // Auto sync pemilih jika komponen modal terbuka dalam layar
+    const mGen = document.querySelector(`#adv-filter-modal .filter-btn`);
+    if (mGen) {
+        closeAdvancedFilterModal();
+        openAdvancedFilterModal();
+    }
+}
 
 function openGroupFilter() {
     if (document.getElementById('group-filter-modal')) return;
@@ -361,7 +353,7 @@ function openGroupFilter() {
                         </div>
                         <span class="gfm-name">${grp}</span>
                     </div>
-                `).join('')}
+                 `).join('')}
             </div>
         </div>
     `;
@@ -393,29 +385,60 @@ function applyGroupFilter(group) {
 
 function applyCurrentFilter() {
     const big4 = ['SM', 'YG', 'JYP', 'HYBE'];
-    const sortBy = document.getElementById('sort-pc').value;
+    const sortBy = currentSortMode; 
+
+    // 1. Filter Berdasarkan Agensi / Perusahaan Utama
+    let sourceData = (typeof currentSection !== 'undefined' && currentSection === 'collection') ? [...myCollection] :
+                     (typeof currentSection !== 'undefined' && currentSection === 'favorite') ? [...myFavorites] :
+                     (typeof currentSection !== 'undefined' && currentSection === 'wishlist') ? [...myWishlist] : [...pcData];
 
     if (currentActiveFilter === 'all') {
-        filteredData = [...pcData];
+        filteredData = [...sourceData];
     } else if (currentActiveFilter === 'other') {
-        filteredData = pcData.filter(item =>
+        filteredData = sourceData.filter(item =>
             !big4.some(key => item.agency.toUpperCase().includes(key))
         );
     } else {
-        filteredData = pcData.filter(item =>
+        filteredData = sourceData.filter(item =>
             item.agency.toUpperCase().includes(currentActiveFilter.toUpperCase())
         );
     }
 
+    // 2. Filter Berdasarkan Grup Musik Kesayangan
     if (currentGroupFilter !== 'all') {
         filteredData = filteredData.filter(item => item.group === currentGroupFilter);
     }
 
+    // 3. Filter Berdasarkan Kata Kunci Input Pencarian Text
     if (currentSearchKeyword !== '') {
         filteredData = filteredData.filter(item =>
             item.member.toLowerCase().includes(currentSearchKeyword) ||
             item.group.toLowerCase().includes(currentSearchKeyword)
         );
+    }
+
+    // 🌟 4. FILTER BARU: BERDASARKAN GENDER GROUP TYPE (GIRLGROUP / BOYGROUP)
+    if (currentGenderFilter !== 'all') {
+        filteredData = filteredData.filter(item => {
+            const type = item.girlgroup || item.boygroup || item.type || '';
+            return type.toLowerCase().includes(currentGenderFilter.toLowerCase());
+        });
+    }
+
+    // 🌟 5. FILTER BARU: BERDASARKAN NEGARA ASAL (NATIONALITY ORIGIN)
+    if (currentNationFilter !== 'all') {
+        filteredData = filteredData.filter(item => {
+            let countryArr = item.origin_country || item.nation || ['korean'];
+            if (!Array.isArray(countryArr)) countryArr = [countryArr];
+            return countryArr.some(c => c.toLowerCase().trim() === currentNationFilter.toLowerCase());
+        });
+    }
+
+    // 🌟 6. FILTER BARU: BERDASARKAN POSISI MEMBER LINES
+    if (currentPositionFilter !== 'all') {
+        filteredData = filteredData.filter(item => {
+            return item.lines && Array.isArray(item.lines) && item.lines.includes(currentPositionFilter);
+        });
     }
 
     const rarityOrder = {
@@ -426,32 +449,130 @@ function applyCurrentFilter() {
     filteredData.sort((a, b) => {
         if (sortBy === 'az')          return a.member.localeCompare(b.member);
         if (sortBy === 'za')          return b.member.localeCompare(a.member);
-        if (sortBy === 'rarity-high') return rarityOrder[b.rarity] - rarityOrder[a.rarity];
-        if (sortBy === 'newest')      return b.id_unique.localeCompare(a.id_unique);
-        if (sortBy === 'oldest')      return a.id_unique.localeCompare(b.id_unique);
+        if (sortBy === 'rarity-high') return rarityOrder[b.rarity.replace(/\s+/g,'')] - rarityOrder[a.rarity.replace(/\s+/g,'')];
+        if (sortBy === 'newest')      return b.id_unique.toString().localeCompare(a.id_unique.toString());
+        if (sortBy === 'oldest')      return a.id_unique.toString().localeCompare(b.id_unique.toString());
         return 0;
     });
 
     currentPage = 1;
     updateDisplay();
 
-    if (currentSearchKeyword) {
-        updateMeta(filteredData.length);
-        updateChips();
+    const activeFilterCount = filteredData.length;
+    if (currentSearchKeyword || currentGenderFilter !== 'all' || currentNationFilter !== 'all' || currentPositionFilter !== 'all') {
+        updateMeta(activeFilterCount);
     } else {
         updateMeta(null);
-        searchChips.innerHTML = '';
     }
 }
 
+// Pasang Event Input Listener & Injeksi Tombol Advanced Filter Baru ke Samping Opsi Sortir
+searchInput.addEventListener('input', (e) => {
+    currentSearchKeyword = e.target.value.toLowerCase().trim();
+    updateClearBtn();
+    renderSuggestions(e.target.value.trim());
+    applyCurrentFilter();
+});
+
+searchInput.addEventListener('focus', () => {
+    const val = searchInput.value.trim();
+    if (val) renderSuggestions(val);
+    else renderPopularSearches();
+});
+
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-container')) closeSuggestions();
+});
+
+const popularSearches = ['aespa', 'NewJeans', 'IVE', 'BTS', 'TWICE', 'Karina', 'Wonyoung', 'Winter'];
+
+function renderPopularSearches() {
+    const html = `
+        <div class="suggestion-section-label">✦ Populer</div>
+        ${popularSearches.map(term => `
+            <div class="suggestion-item suggestion-popular" onclick="applyPopularSearch('${term}')">
+                <div class="suggestion-item-icon" style="background:rgba(255,0,122,0.08);">
+                    <span style="font-size:14px">🔥</span>
+                </div>
+                <div class="suggestion-item-text">
+                    <div class="suggestion-item-name">${term}</div>
+                </div>
+                <span class="suggestion-count" style="color:rgba(255,0,122,0.5);">trending</span>
+            </div>
+        `).join('')}
+    `;
+    searchSuggestions.innerHTML = html;
+    searchSuggestions.classList.add('open');
+    searchWrapper.classList.remove('no-dropdown');
+}
+
+function applyPopularSearch(term) {
+    searchInput.value = term;
+    currentSearchKeyword = term.toLowerCase();
+    updateClearBtn();
+    closeSuggestions();
+    updateChips();
+    applyCurrentFilter();
+    searchInput.blur();
+}
+
+document.querySelectorAll('.filter-group .filter-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        const button = e.currentTarget;
+        document.querySelectorAll('.filter-group .filter-btn').forEach(b => b.classList.remove('active'));
+        button.classList.add('active');
+        currentActiveFilter = button.dataset.agency;
+        applyCurrentFilter();
+    });
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     const sortWrapper = document.querySelector('.filter-sort-wrapper');
-    if (sortWrapper && !document.getElementById('group-filter-btn')) {
-        const groupBtn = document.createElement('button');
-        groupBtn.id = 'group-filter-btn';
-        groupBtn.className = 'group-filter-btn';
-        groupBtn.textContent = '🎤 All Groups ▾';
-        groupBtn.onclick = openGroupFilter;
-        sortWrapper.prepend(groupBtn);
+    if (sortWrapper) {
+        if (!document.getElementById('group-filter-btn')) {
+            const groupBtn = document.createElement('button');
+            groupBtn.id = 'group-filter-btn';
+            groupBtn.className = 'group-filter-btn';
+            groupBtn.textContent = '🎤 All Groups ▾';
+            groupBtn.onclick = openGroupFilter;
+            sortWrapper.prepend(groupBtn);
+        }
+        
+        // Injeksi Tombol Filter Advanced Tambahan Tepat di Samping Tombol Opsi Grup
+        if (!document.getElementById('adv-filter-btn')) {
+            const advBtn = document.createElement('button');
+            advBtn.id = 'adv-filter-btn';
+            advBtn.className = 'group-filter-btn adv-filter-btn';
+            advBtn.innerHTML = '⚙️ Advanced ▾';
+            advBtn.style.marginLeft = '5px';
+            advBtn.onclick = openAdvancedFilterModal;
+            sortWrapper.appendChild(advBtn);
+        }
+    }
+
+    const dropdown = document.getElementById('sort-dropdown');
+    if (dropdown) {
+        const selected = dropdown.querySelector('.dropdown-selected');
+        const selectedText = selected.querySelector('span');
+        const options = dropdown.querySelectorAll('.dropdown-opt');
+
+        selected.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('open');
+        });
+
+        options.forEach(opt => {
+            opt.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdown.querySelectorAll('.dropdown-opt').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+                selectedText.textContent = this.textContent;
+                dropdown.classList.remove('open');
+                currentSortMode = this.dataset.value;
+                applyCurrentFilter();
+            });
+        });
+
+        document.addEventListener('click', () => dropdown.classList.remove('open'));
     }
 });

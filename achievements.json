@@ -1,0 +1,89 @@
+[
+    { "id": "acv_total_1", "title": "🐣 First Step", "description": "Berhasil memecahkan telur dengan mendapatkan photocard pertama kamu.", "tier": "COMMON", "secret": false },
+    { "id": "acv_total_10", "title": "📦 Newbie Collector", "description": "Mulai rajin nih! Berhasil mengoleksi total 10 photocard.", "tier": "COMMON", "secret": false },
+    { "id": "acv_total_30", "title": "🎵 K-POP Fans", "description": "Sudah sah jadi fans kpop. Berhasil mengoleksi total 30 photocard.", "tier": "COMMON", "secret": false },
+    { "id": "acv_total_50", "title": "✨ Stan Account", "description": "Koleksi makin tebal layaknya akun stan sejati. Total 50 photocard terkumpul.", "tier": "UNCOMMON", "secret": false },
+    { "id": "acv_total_100", "title": "💎 Elite Collector", "description": "Gokil! Level koleksimu sudah diakui. Berhasil mengoleksi 100 photocard.", "tier": "RARE", "secret": false },
+    { "id": "acv_total_300", "title": "🔥 PC Addict", "description": "Kecanduan photocard tingkat akut! Berhasil mengoleksi total 300 photocard.", "tier": "SUPER RARE", "secret": false },
+    { "id": "acv_total_500", "title": "👑 God Collector", "description": "Sembah sepuh! Koleksimu sudah setara museum dengan 500 photocard.", "tier": "ULTRA RARE", "secret": false },
+    { "id": "acv_total_all", "title": "🌌 Tuan Tanah Kwangya", "description": "Menamatkan game! Seluruh database photocard berhasil kamu kuasai.", "tier": "LEGENDARY", "secret": false },
+
+    { "id": "acv_sm_10", "title": "❤️ SM Stan", "description": "Koleksi 10 kartu dari grup naungan SM Entertainment.", "tier": "UNCOMMON", "secret": false },
+    { "id": "acv_sm_25", "title": "🏢 Pemegang Saham SM", "description": "Koleksi 25 kartu dari grup naungan SM Entertainment.", "tier": "SUPER RARE", "secret": false },
+    { "id": "acv_sm_all", "title": "🏛️ Penguasa Gedung SM", "description": "Mengoleksi seluruh isi database kartu grup SM Entertainment.", "tier": "ULTRA RARE", "secret": false },
+
+    { "id": "acv_yg_10", "title": "👑 YG Stan", "description": "Koleksi 10 kartu dari grup naungan YG Entertainment.", "tier": "UNCOMMON", "secret": false },
+    { "id": "acv_yg_15", "title": "🎤 Hip-Hop Dynasty", "description": "Koleksi 15 kartu dari grup naungan YG Entertainment.", "tier": "SUPER RARE", "secret": false },
+    { "id": "acv_yg_all", "title": "💎 YG Dungeon Escape", "description": "Mengoleksi seluruh isi database kartu grup YG Entertainment.", "tier": "ULTRA RARE", "secret": false },
+
+    { "id": "acv_jyp_10", "title": "🕺 JYP Stan", "description": "Koleksi 10 kartu dari grup naungan JYP Entertainment.", "tier": "UNCOMMON", "secret": false },
+    { "id": "acv_jyp_25", "title": "🌊 Organic Wave", "description": "Koleksi 25 kartu dari grup naungan JYP Entertainment.", "tier": "SUPER RARE", "secret": false },
+    { "id": "acv_jyp_all", "title": "🎧 JYP Organic Kitchen", "description": "Mengoleksi seluruh isi database kartu grup JYP Entertainment.", "tier": "ULTRA RARE", "secret": false },
+
+    { "id": "acv_hybe_10", "title": "🎪 HYBE Stan", "description": "Koleksi 10 kartu dari grup naungan HYBE Labels.", "tier": "UNCOMMON", "secret": false },
+    { "id": "acv_hybe_25", "title": "🚀 Corporate Monopoly", "description": "Koleksi 25 kartu dari grup naungan HYBE Labels.", "tier": "SUPER RARE", "secret": false },
+    { "id": "acv_hybe_all", "title": "🎯 We Believe In Music", "description": "Mengoleksi seluruh isi database kartu grup HYBE Labels.", "tier": "ULTRA RARE", "secret": false },
+
+    { "id": "acv_other_10", "title": "💎 Nugu Supporter", "description": "Koleksi 10 kartu dari agensi di luar Big 4.", "tier": "UNCOMMON", "secret": false },
+    { "id": "acv_other_25", "title": "🌱 Hidden Gem Protector", "description": "Koleksi 25 kartu dari agensi di luar Big 4.", "tier": "SUPER RARE", "secret": false },
+    { "id": "acv_other_all", "title": "🚀 Indie Pride", "description": "Mengoleksi seluruh isi database kartu agensi luar Big 4.", "tier": "ULTRA RARE", "secret": false },
+
+    { "id": "acv_rare_common_10", "title": "📸 Selca Enjoyer", "description": "Mengoleksi 10 photocard berkategori Common.", "tier": "COMMON", "secret": false },
+    { "id": "acv_rare_common_20", "title": "🖼️ Galeri Selfie", "description": "Mengoleksi 20 photocard berkategori Common.", "tier": "COMMON", "secret": false },
+    { "id": "acv_rare_common_all", "title": "📁 Raja Selca Khazanah", "description": "Mengoleksi seluruh isi database kartu berkategori Common.", "tier": "RARE", "secret": false },
+
+    { "id": "acv_rare_uncommon_10", "title": "🌿 Rookie Era", "description": "Mengoleksi 10 photocard berkategori Uncommon.", "tier": "COMMON", "secret": false },
+    { "id": "acv_rare_uncommon_20", "title": "🎵 Bersemi di Panggung", "description": "Mengoleksi 20 photocard berkategori Uncommon.", "tier": "COMMON", "secret": false },
+    { "id": "acv_rare_uncommon_all", "title": "🍀 Master of Debut", "description": "Mengoleksi seluruh isi database kartu berkategori Uncommon.", "tier": "RARE", "secret": false },
+
+    { "id": "acv_rare_rare_10", "title": "💎 Rare Hunter", "description": "Mengoleksi 10 photocard berkategori Rare.", "tier": "UNCOMMON", "secret": false },
+    { "id": "acv_rare_rare_20", "title": "💠 Koleksi Berkilau", "description": "Mengoleksi 20 photocard berkategori Rare.", "tier": "UNCOMMON", "secret": false },
+    { "id": "acv_rare_rare_all", "title": "🛸 Rare Overload", "description": "Mengoleksi seluruh isi database kartu berkategori Rare.", "tier": "SUPER RARE", "secret": false },
+
+    { "id": "acv_rare_sr_10", "title": "🔮 Super Rare Specialist", "description": "Mengoleksi 10 photocard berkategori Super Rare.", "tier": "RARE", "secret": false },
+    { "id": "acv_rare_sr_20", "title": "✨ Aura Premium", "description": "Mengoleksi 20 photocard berkategori Super Rare.", "tier": "RARE", "secret": false },
+    { "id": "acv_rare_sr_all", "title": "🌟 Dinasti Super Rare", "description": "Mengoleksi seluruh isi database kartu berkategori Super Rare.", "tier": "ULTRA RARE", "secret": false },
+
+    { "id": "acv_rare_ur_first", "title": "🔥 Pecah Telur Hoki", "description": "Berhasil memecahkan telur mendapatkan kartu Ultra Rare pertama.", "tier": "RARE", "secret": false },
+    { "id": "acv_rare_ur_10", "title": "⚡ Ultra Rare Magnet", "description": "Mengoleksi 10 photocard berkategori Ultra Rare.", "tier": "SUPER RARE", "secret": false },
+    { "id": "acv_rare_ur_20", "title": "💥 Flexing Rarity", "description": "Mengoleksi 20 photocard berkategori Ultra Rare.", "tier": "SUPER RARE", "secret": false },
+    { "id": "acv_rare_ur_all", "title": "☄️ Penguasa Angkasa UR", "description": "Mengoleksi seluruh isi database kartu berkategori Ultra Rare.", "tier": "LIMIT", "secret": false },
+
+    { "id": "acv_rare_lim_first", "title": "🌌 Tiket Terbatas", "description": "Berhasil mendapatkan kartu Limited pertama kamu.", "tier": "SUPER RARE", "secret": false },
+    { "id": "acv_rare_lim_10", "title": "🪐 Limited Edition", "description": "Mengoleksi 10 photocard berkategori Limited.", "tier": "ULTRA RARE", "secret": false },
+    { "id": "acv_rare_lim_20", "title": "🛡️ Benteng Keberuntungan", "description": "Mengoleksi 20 photocard berkategori Limited.", "tier": "ULTRA RARE", "secret": false },
+    { "id": "acv_rare_lim_all", "title": "⌛ Kolektor Garis Langka", "description": "Mengoleksi seluruh isi database kartu berkategori Limited.", "tier": "LIMIT", "secret": false },
+
+    { "id": "acv_rare_sec_first", "title": "👁️ Menembus Mitos", "description": "Berhasil menembus rate gacha paling mistis mendapatkan kartu Secret.", "tier": "ULTRA RARE", "secret": false },
+    { "id": "acv_rare_sec_10", "title": "🔮 Penjaga Rahasia", "description": "Mengoleksi 10 photocard berkategori Secret.", "tier": "LIMIT", "secret": false },
+    { "id": "acv_rare_sec_20", "title": "🧿 Iluminati Gacha", "description": "Mengoleksi 20 photocard berkategori Secret.", "tier": "LIMIT", "secret": false },
+    { "id": "acv_rare_sec_all", "title": "👁️‍🗨️ Master of Mystical Rate", "description": "Mengoleksi seluruh isi database kartu berkategori Secret.", "tier": "LEGENDARY", "secret": false },
+
+    { "id": "acv_line_japan", "title": "🌸 Japan Line Complete", "description": "Mengoleksi seluruh member asal Jepang.", "tier": "SUPER RARE", "secret": false },
+    { "id": "acv_line_global", "title": "🌏 Passport Squad", "description": "Mengoleksi seluruh member berkebangsaan non-Korea.", "tier": "SUPER RARE", "secret": false },
+    { "id": "acv_line_korean", "title": "🇰🇷 Hallyu Wave Royalty", "description": "Mengoleksi seluruh member asal Korea.", "tier": "ULTRA RARE", "secret": false },
+
+    { "id": "acv_complete_g1", "title": "🎤 OT Complete!", "description": "Mengoleksi lengkap seluruh member di dalam 1 grup idola.", "tier": "RARE", "secret": false },
+    { "id": "acv_complete_g5", "title": "🗂️ Multi-Fandom Stan", "description": "Mengoleksi lengkap seluruh member di dalam 5 grup idola.", "tier": "SUPER RARE", "secret": false },
+    { "id": "acv_complete_g10", "title": "🎼 K-POP Mastermind", "description": "Mengoleksi lengkap seluruh member di dalam 10 grup idola.", "tier": "ULTRA RARE", "secret": false },
+
+    { "id": "acv_line_visual", "title": "✨ Visual Attack!", "description": "Mengoleksi seluruh lini visual ikonik di database.", "tier": "RARE", "secret": false },
+    { "id": "acv_line_vocal", "title": "🎤 The Golden Voice", "description": "Mengoleksi seluruh penyanyi utama bersuara emas di database.", "tier": "RARE", "secret": false },
+    { "id": "acv_line_maknae", "title": "🍼 Bontot Kesayangan", "description": "Mengoleksi seluruh member termuda (Maknae) dari setiap grup.", "tier": "RARE", "secret": false },
+    { "id": "acv_line_leader", "title": "⚔️ Captain of the Ship", "description": "Mengoleksi seluruh pemimpin (Leader) tangguh grup idola.", "tier": "RARE", "secret": false },
+    { "id": "acv_line_rapper", "title": "🔥 Spitfire Verse", "description": "Mengoleksi seluruh mesin pelontar rima rap di database.", "tier": "RARE", "secret": false },
+    { "id": "acv_line_center", "title": "🎯 Center of Attention", "description": "Mengoleksi seluruh member pemegang posisi Center utama panggung.", "tier": "RARE", "secret": false },
+    { "id": "acv_line_dancer", "title": "👑 Main Dancer Synergy", "description": "Mengoleksi seluruh isi database kartu berposisi Dancer.", "tier": "ULTRA RARE", "secret": false },
+
+    { "id": "acv_pull_rainbow", "title": "🌈 The Rainbow Pull", "description": "Dalam satu kali 10-Pull, kamu mendapatkan minimal 4 tingkatan rarity yang berbeda sekaligus!", "tier": "SUPER RARE", "secret": false },
+    { "id": "acv_pull_lucky5", "title": "🍀 Lucky Five", "description": "Dalam satu kali 10-pull sukses membawa pulang 5 kartu Ultra Rare ke atas sekaligus!", "tier": "ULTRA RARE", "secret": false },
+
+    { "id": "sec_dup_jamaah", "title": "🤡 Duplikat Berjamaah", "description": "Dapat kartu yang sama persis sebanyak 3 kali berturut-turut dalam satu sesi Multi-pull.", "tier": "EPIC", "secret": true },
+    { "id": "sec_lucky_gacha", "title": "🎰 Wonyoung Blessing", "description": "Dapat kartu SECRET atau ULTRA RARE di bawah 20 kali pity.", "tier": "RARE", "secret": true },
+    { "id": "sec_unlucky_gacha", "title": "💀 Korban Sakit Hati", "description": "Menyentuh batas maksimal hard pity sebelum akhirnya mendapatkan kartu rarity tinggi.", "tier": "UNCOMMON", "secret": true },
+    { "id": "sec_multipull_sr5", "title": "👑 Kesurupan Dewa Gacha", "description": "Dapat 5 kartu Super Rare ke atas dalam sekali multipull 10.", "tier": "SUPER RARE", "secret": true },
+    { "id": "sec_single_believer", "title": "🛐 Single Pull Believer", "description": "Mendapatkan kartu ULTRA RARE atau SECRET murni dari fitur Single Pull (bukan dari 10-Pull).", "tier": "RARE", "secret": true },
+    { "id": "sec_bias_loyal", "title": "❤️ Setia pada Bias", "description": "Mengisi daftar Top 5 Bias di menu edit profil secara lengkap tanpa ada slot yang kosong.", "tier": "COMMON", "secret": true },
+    { "id": "sec_identity_crisis", "title": "🎭 Krisis Identitas", "description": "Mengubah nama kolektor atau mengupload foto avatar baru sebanyak 5 kali.", "tier": "COMMON", "secret": true },
+    { "id": "sec_first_print", "title": "🥇 The First Print", "description": "Berhasil nge-pull kartu yang nomor urut serialnya adalah #0001 (kartu cetakan pertama di database).", "tier": "LEGENDARY", "secret": true }
+]

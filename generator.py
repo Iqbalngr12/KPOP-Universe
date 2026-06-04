@@ -4,209 +4,165 @@ import re
 
 groups = {
     "aespa": {
-        "g_code": "AE",
-        "agency": "SM Entertainment", 
-        "logo": "assets/logos/aespa.png",
-        "debut_song": "Black Mamba",
+        "g_code": "AE", "agency": "SM Entertainment", "logo": "aespa.png", "gender": "girlgroups", "debut_song": "Black Mamba",
         "members": [
-            {"full": "Giselle", "m_code": "GSL"}, 
-            {"full": "Karina", "m_code": "KRN"},
-            {"full": "Ningning", "m_code": "NNG"},
-            {"full": "Winter", "m_code": "WTR"}
+            {"full": "Giselle", "m_code": "GSL", "origin_country": ["japan", "korean"], "lines": ["main_rapper", "sub_vocal"]}, 
+            {"full": "Karina", "m_code": "KRN", "origin_country": ["korean"], "lines": ["leader", "main_dancer", "lead_rapper", "sub_vocal", "visual","fotg", "center"]},
+            {"full": "Ningning", "m_code": "NNG", "origin_country": ["china"], "lines": ["main_vocal", "maknae"]},
+            {"full": "Winter", "m_code": "WTR", "origin_country": ["korean"], "lines": ["main_vocal", "lead_dancer", "visual"]}
         ]
     },
     "BLACKPINK": {
-        "g_code": "BP",
-        "agency": "YG Entertainment", 
-        "logo": "assets/logos/bp.png",
-        "debut_song": "Whistle",
+        "g_code": "BP", "agency": "YG Entertainment", "logo": "bp.png", "gender": "girlgroups", "debut_song": "Whistle",
         "members": [
-            {"full": "Jennie", "m_code": "JNE"}, 
-            {"full": "Jisoo", "m_code": "JSO"},
-            {"full": "Lisa", "m_code": "LIS"},
-            {"full": "Rose", "m_code": "ROS"}
+            {"full": "Jennie", "m_code": "JNE", "origin_country": ["korean"], "lines": ["main_rapper", "lead_vocal"]}, 
+            {"full": "Jisoo", "m_code": "JSO", "origin_country": ["korean"], "lines": ["lead_vocal", "visual"]},
+            {"full": "Lisa", "m_code": "LIS", "origin_country": ["thailand"], "lines": ["main_dancer", "lead_rapper", "sub_vocal", "maknae"]},
+            {"full": "Rose", "m_code": "ROS", "origin_country": ["korean", "new_zealand"], "lines": ["main_vocal", "lead_dancer"]}
         ]
     },
     "BABYMONSTER": {
-        "g_code": "BM",
-        "agency": "YG Entertainment", 
-        "logo": "assets/logos/bm.png", 
-        "debut_song": "SHEESH",
+        "g_code": "BM", "agency": "YG Entertainment", "logo": "bm.png", "gender": "girlgroups", "debut_song": "SHEESH",
         "members": [
-            {"full": "Ahyeon", "m_code": "AHY"}, 
-            {"full": "Asa", "m_code": "ASA"},
-            {"full": "Chiquita", "m_code": "CHQ"},
-            {"full": "Pharita", "m_code": "PHR"},
-            {"full": "Rami", "m_code": "RAM"},
-            {"full": "Ruka", "m_code": "RUK"},
-            {"full": "Rora", "m_code": "ROR"}
+            {"full": "Ahyeon", "m_code": "AHY", "origin_country": ["korean"], "lines": ["main_vocal", "rapper", "dancer", "visual", "center"]}, 
+            {"full": "Asa", "m_code": "ASA", "origin_country": ["japan"], "lines": ["main_rapper", "vocal","dancer"]},
+            {"full": "Chiquita", "m_code": "CHQ", "origin_country": ["thailand"], "lines": ["vocal", "dancer", "rapper", "maknae"]},
+            {"full": "Pharita", "m_code": "PHR", "origin_country": ["thailand"], "lines": ["vocal"]},
+            {"full": "Rami", "m_code": "RAM", "origin_country": ["korean"], "lines": ["main_vocal"]},
+            {"full": "Ruka", "m_code": "RUK", "origin_country": ["japan"], "lines": ["main_dancer", "main_rapper"]},
+            {"full": "Rora", "m_code": "ROR", "origin_country": ["korean"], "lines": ["lead_vocal", "visual"]},
         ]
     },
     "EVERGLOW": {
-        "g_code": "EVG",
-        "agency": "Yuehua Entertainment", 
-        "logo": "assets/logos/everglow.png", 
-        "debut_song": "Bon Bon Chocolat",
+        "g_code": "EVG", "agency": "Yuehua Entertainment", "logo": "everglow.png", "gender": "girlgroups", "debut_song": "Bon Bon Chocolat",
         "members": [
-            {"full": "Aisha", "m_code": "AIS"}, 
-            {"full": "E:U", "m_code": "EU"},
-            {"full": "Mia", "m_code": "MIA"},
-            {"full": "Onda", "m_code": "OND"},
-            {"full": "Sihyeon", "m_code": "SIH"},
-            {"full": "Yiren", "m_code": "YIR"}
+            {"full": "Aisha", "m_code": "AIS", "origin_country": ["korean"], "lines": ["lead_rapper", "lead_dancer", "visual", "fotg", "maknae"]}, 
+            {"full": "E:U", "m_code": "EU", "origin_country": ["korean"], "lines": ["main_rapper", "main_dancer"]},
+            {"full": "Mia", "m_code": "MIA", "origin_country": ["korean"], "lines": ["main_vocal", "main_dancer"]},
+            {"full": "Onda", "m_code": "OND", "origin_country": ["korean"], "lines": ["lead_dancer"]},
+            {"full": "Sihyeon", "m_code": "SIH", "origin_country": ["korean"], "lines": ["leader", "lead_vocal", "fotg"]},
+            {"full": "Yiren", "m_code": "YIR", "origin_country": ["china"], "lines": ["lead_dancer","visual", "center", "fotg", "maknae"]}
         ]
     },
     "GFRIEND": {
-        "g_code": "GFR",
-        "agency": "Source Music ( HYBE Labels )", 
-        "logo": "assets/logos/gfriend.png", 
-        "debut_song": "Glass Bead",
+        "g_code": "GFR", "agency": "Source Music ( HYBE Labels )", "logo": "gfriend.png", "gender": "girlgroups", "debut_song": "Glass Bead",
         "members": [
-            {"full": "Eunha", "m_code": "EUN"}, 
-            {"full": "SinB", "m_code": "SIN"},
-            {"full": "Sowon", "m_code": "SOW"},
-            {"full": "Umji", "m_code": "UMJ"},
-            {"full": "Yerin", "m_code": "YER"},
-            {"full": "Yuju", "m_code": "YUJ"}
+            {"full": "Eunha", "m_code": "EUN", "origin_country": ["korean"], "lines": ["lead_vocal"]}, 
+            {"full": "SinB", "m_code": "SIN", "origin_country": ["korean"], "lines": ["main_dancer", "vocal", "center"]},
+            {"full": "Sowon", "m_code": "SOW", "origin_country": ["korean"], "lines": ["leader", "vocal", "visual"]},
+            {"full": "Umji", "m_code": "UMJ", "origin_country": ["korean"], "lines": ["vocal", "maknae"]},
+            {"full": "Yerin", "m_code": "YER", "origin_country": ["korean"], "lines": ["lead_dancer", "vocal", "center", "fotg"]},
+            {"full": "Yuju", "m_code": "YUJ", "origin_country": ["korean"], "lines": ["main_vocal"]}
         ]
     },
     "Hearts2Hearts": {
-        "g_code": "H2H",
-        "agency": "SM Entertainment", 
-        "logo": "assets/logos/h2h.png", 
-        "debut_song": "The Chase",
+        "g_code": "H2H", "agency": "SM Entertainment", "logo": "h2h.png", "gender": "girlgroups", "debut_song": "The Chase",
         "members": [
-            {"full": "A-na", "m_code": "ANA"}, 
-            {"full": "Carmen", "m_code": "CRM"},
-            {"full": "Ian", "m_code": "IAN"},
-            {"full": "Jiwoo", "m_code": "JIW"},
-            {"full": "Juun", "m_code": "JUN"},
-            {"full": "Stela", "m_code": "STL"},
-            {"full": "Ye-on", "m_code": "YON"},
-            {"full": "Yuha", "m_code": "YUH"}
+            {"full": "A-na", "m_code": "ANA", "origin_country": ["korean"], "lines": ["rapper", "vocal", "visual"]}, 
+            {"full": "Carmen", "m_code": "CRM", "origin_country": ["indonesia"], "lines": ["vocal"]},
+            {"full": "Ian", "m_code": "IAN", "origin_country": ["korean"], "lines": ["dancer", "vocal", "visual", "center"]},
+            {"full": "Jiwoo", "m_code": "JIW", "origin_country": ["korean"], "lines": ["leader", "dancer", "rapper", "vocal", "visual"]},
+            {"full": "Juun", "m_code": "JUN", "origin_country": ["korean"], "lines": ["main_dancer", "vocal", "rapper"]},
+            {"full": "Stela", "m_code": "STL", "origin_country": ["korean", "canada"], "lines": ["vocal"]},
+            {"full": "Ye-on", "m_code": "YON", "origin_country": ["korean"], "lines": ["vocal", "maknae"]},
+            {"full": "Yuha", "m_code": "YUH", "origin_country": ["korean"], "lines": ["vocal", "dancer"]}
         ]
     },
     "ITZY": {
-        "g_code": "ITZ",
-        "agency": "JYP Entertainment", 
-        "logo": "assets/logos/itzy.png", 
-        "debut_song": "Dalla Dalla",
+        "g_code": "ITZ", "agency": "JYP Entertainment", "logo": "itzy.png", "gender": "girlgroups", "debut_song": "Dalla Dalla",
         "members": [
-            {"full": "Chaeryeong", "m_code": "CRY"}, 
-            {"full": "Lia", "m_code": "LIA"},
-            {"full": "Ryujin", "m_code": "RYJ"},
-            {"full": "Yeji", "m_code": "YEJ"},
-            {"full": "Yuna", "m_code": "YUN"}
+            {"full": "Chaeryeong", "m_code": "CRY", "origin_country": ["korean"], "lines": ["main_dancer", "sub_vocal", "sub_rapper"]}, 
+            {"full": "Lia", "m_code": "LIA", "origin_country": ["korean"], "lines": ["main_vocal", "sub_rapper"]},
+            {"full": "Ryujin", "m_code": "RYJ", "origin_country": ["korean"], "lines": ["main_rapper", "lead_dancer", "sub_vocal", "center"]},
+            {"full": "Yeji", "m_code": "YEJ", "origin_country": ["korean"], "lines": ["leader", "main_dancer", "lead_vocal", "sub_rapper"]},
+            {"full": "Yuna", "m_code": "YUN", "origin_country": ["korean"], "lines": ["lead_rapper", "lead_dancer", "sub_vocal", "visual", "maknae"]}
         ]
     },
     "i-dle": {
-        "g_code": "IDLE",
-        "agency": "Cube Entertainment", 
-        "logo": "assets/logos/idle.png", 
-        "debut_song": "LATATA",
+        "g_code": "IDLE", "agency": "Cube Entertainment", "logo": "idle.png", "gender": "girlgroups", "debut_song": "LATATA",
         "members": [
-            {"full": "Minnie", "m_code": "MIN"}, 
-            {"full": "Miyeon", "m_code": "MIY"},
-            {"full": "Shuhua", "m_code": "SHU"},
-            {"full": "Soojin", "m_code": "SOO"},
-            {"full": "Soyeon", "m_code": "SOY"},
-            {"full": "Yuqi", "m_code": "YUQ"}
+            {"full": "Minnie", "m_code": "MIN", "origin_country": ["thailand"], "lines": ["main_vocal"]}, 
+            {"full": "Miyeon", "m_code": "MIY", "origin_country": ["korean"], "lines": ["main_vocal", "visual"]},
+            {"full": "Shuhua", "m_code": "SHU", "origin_country": ["taiwan"], "lines": ["sub_vocal", "visual", "maknae"]},
+            {"full": "Soojin", "m_code": "SOO", "origin_country": ["korean"], "lines": ["main_dancer", "sub_vocal", "sub_rapper"]},
+            {"full": "Soyeon", "m_code": "SOY", "origin_country": ["korean"], "lines": ["leader", "main_rapper", "sub_vocal", "center"]},
+            {"full": "Yuqi", "m_code": "YUQ", "origin_country": ["china"], "lines": ["main_dancer", "sub_vocal", "sub_rapper", "fotg"]},
         ]
     },
     "IVE": {
-        "g_code": "IVE",
-        "agency": "Starship Entertainment", 
-        "logo": "assets/logos/ive.png", 
-        "debut_song": "ELEVEN",
+        "g_code": "IVE", "agency": "Starship Entertainment", "logo": "ive.png", "gender": "girlgroups", "debut_song": "ELEVEN",
         "members": [
-            {"full": "Gaeul", "m_code": "GAE"}, 
-            {"full": "Leeseo", "m_code": "LSO"},
-            {"full": "Liz", "m_code": "LIZ"},
-            {"full": "Rei", "m_code": "REI"},
-            {"full": "Wonyoung", "m_code": "WNY"},
-            {"full": "Yujin", "m_code": "YJN"}
+            {"full": "Gaeul", "m_code": "GAE", "origin_country": ["korean"], "lines": ["main_dancer", "lead_rapper", "sub_vocal"]}, 
+            {"full": "Leeseo", "m_code": "LSO", "origin_country": ["korean"], "lines": ["sub_vocal", "maknae"]},
+            {"full": "Liz", "m_code": "LIZ", "origin_country": ["korean"], "lines": ["main_vocal"]},
+            {"full": "Rei", "m_code": "REI", "origin_country": ["japan"], "lines": ["main_rapper", "sub_vocal"]},
+            {"full": "Wonyoung", "m_code": "WNY", "origin_country": ["korean"], "lines": ["vocal", "dancer", "visual"]},
+            {"full": "Yujin", "m_code": "YJN", "origin_country": ["korean"], "lines": ["leader", "main_vocal", "main_dancer"]}
         ]
     },
     "ILLIT": {
-        "g_code": "ILT",
-        "agency": "Belift Lab ( HYBE Labels )", 
-        "logo": "assets/logos/illit.png", 
-        "debut_song": "Magnetic",
+        "g_code": "ILT", "agency": "Belift Lab ( HYBE Labels )", "logo": "illit.png", "gender": "girlgroups", "debut_song": "Magnetic",
         "members": [
-            {"full": "Iroha", "m_code": "IRO"}, 
-            {"full": "Minju", "m_code": "MNJ"},
-            {"full": "Moka", "m_code": "MOK"},
-            {"full": "Wonhee", "m_code": "WNH"},
-            {"full": "Yunah", "m_code": "YNH"}
+            {"full": "Iroha", "m_code": "IRO", "origin_country": ["japan"], "lines": ["main_dancer", "vocal", "maknae"]}, 
+            {"full": "Minju", "m_code": "MNJ", "origin_country": ["korean"], "lines": ["main_vocal", "lead_dancer", "fotg"]},
+            {"full": "Moka", "m_code": "MOK", "origin_country": ["japan"], "lines": ["sub_vocal", "lead_dancer", "visual"]},
+            {"full": "Wonhee", "m_code": "WNH", "origin_country": ["korean"], "lines": ["center", "lead_vocal", "fotg", "visual"]},
+            {"full": "Yunah", "m_code": "YNH", "origin_country": ["korean"], "lines": ["leader", "vocal", "lead_dancer"]}
         ]
     },
     "LE SSERAFIM": {
-        "g_code": "LSF",
-        "agency": "Source Music ( HYBE Labels )", 
-        "logo": "assets/logos/ls.png", 
-        "debut_song": "FEARLESS",
+        "g_code": "LSF", "agency": "Source Music ( HYBE Labels )", "logo": "ls.png", "gender": "girlgroups", "debut_song": "FEARLESS",
         "members": [
-            {"full": "Chaewon", "m_code": "CHW"}, 
-            {"full": "Eunchae", "m_code": "ECH"},
-            {"full": "Kazuha", "m_code": "KZH"},
-            {"full": "Sakura", "m_code": "SKR"},
-            {"full": "Yunjin", "m_code": "YNJ"}
+            {"full": "Chaewon", "m_code": "CHW", "origin_country": ["korean"], "lines": ["leader", "vocal", "dancer"]}, 
+            {"full": "Eunchae", "m_code": "ECH", "origin_country": ["korean"], "lines": ["vocal", "lead_dancer", "maknae"]},
+            {"full": "Kazuha", "m_code": "KZH", "origin_country": ["japan"], "lines": ["rapper", "sub_vocal", "dancer"]},
+            {"full": "Sakura", "m_code": "SKR", "origin_country": ["japan"], "lines": ["vocal", "rapper", "dancer"]},
+            {"full": "Yunjin", "m_code": "YNJ", "origin_country": ["korean", "usa"], "lines": ["vocal", "rapper"]}
         ]
     },
     "NewJeans": {
-        "g_code": "NJ",
-        "agency": "ADOR ( HYBE Labels )", 
-        "logo": "assets/logos/nj.png", 
-        "debut_song": "Attention",
+        "g_code": "NJ", "agency": "ADOR ( HYBE Labels )", "logo": "nj.png", "gender": "girlgroups", "debut_song": "Attention",
         "members": [
-            {"full": "Danielle", "m_code": "DNL"}, 
-            {"full": "Haerin", "m_code": "HRN"},
-            {"full": "Hanni", "m_code": "HNI"},
-            {"full": "Hyein", "m_code": "HYN"},
-            {"full": "Minji", "m_code": "MNJ"}
+            {"full": "Danielle", "m_code": "DNL", "origin_country": ["australia", "korean"], "lines": ["vocal", "dancer", "visual"]}, 
+            {"full": "Haerin", "m_code": "HRN", "origin_country": ["korean"], "lines": ["lead_vocal", "lead_dancer"]},
+            {"full": "Hanni", "m_code": "HNI", "origin_country": ["vietnam", "australia"], "lines": ["vocal", "dancer"]},
+            {"full": "Hyein", "m_code": "HYN", "origin_country": ["korean"], "lines": ["vocal", "dancer", "maknae"]},
+            {"full": "Minji", "m_code": "MNJ", "origin_country": ["korean"], "lines": ["leader", "vocal", "dancer"]}
         ]
     },
     "NMIXX": {
-        "g_code": "NMX",
-        "agency": "JYP Entertainment", 
-        "logo": "assets/logos/nmixx.png", 
-        "debut_song": "O.O",
+        "g_code": "NMX", "agency": "JYP Entertainment", "logo": "nmixx.png", "gender": "girlgroups", "debut_song": "O.O",
         "members": [
-            {"full": "Bae", "m_code": "BAE"}, 
-            {"full": "Jiwoo", "m_code": "JWO"},
-            {"full": "Lily", "m_code": "LLY"},
-            {"full": "Haewon", "m_code": "HWN"},
-            {"full": "Sullyoon", "m_code": "SLY"}
+            {"full": "Bae", "m_code": "BAE", "origin_country": ["korean"], "lines": ["vocal", "dancer"]}, 
+            {"full": "Jiwoo", "m_code": "JWO", "origin_country": ["korean"], "lines": ["main_rapper", "dancer", "vocal"]},
+            {"full": "Kyujin", "m_code": "KYJ", "origin_country": ["korean"], "lines": ["main_dancer", "rapper", "vocal", "maknae"]},
+            {"full": "Lily", "m_code": "LLY", "origin_country": ["australia", "korean"], "lines": ["main_vocal"]},
+            {"full": "Haewon", "m_code": "HWN", "origin_country": ["korean"], "lines": ["leader", "main_vocal"]},
+            {"full": "Sullyoon", "m_code": "SLY", "origin_country": ["korean"], "lines": ["lead_vocal","dancer", "visual"]},
         ]
     },
     "Red Velvet": {
-        "g_code": "RV",
-        "agency": "SM Entertainment", 
-        "logo": "assets/logos/rv.png",
-        "debut_song": "Happiness",
+        "g_code": "RV", "agency": "SM Entertainment", "logo": "rv.png", "gender": "girlgroups", "debut_song": "Happiness",
         "members": [
-            {"full": "Irene", "m_code": "IRN"}, 
-            {"full": "Joy", "m_code": "JOY"},
-            {"full": "Seulgi", "m_code": "SLG"},
-            {"full": "Wendy", "m_code": "WND"},
-            {"full": "Yeri", "m_code": "YRI"}
+            {"full": "Irene", "m_code": "IRN", "origin_country": ["korean"], "lines": ["leader", "main_rapper", "lead_dancer", "sub_vocal", "visual", "center"]}, 
+            {"full": "Joy", "m_code": "JOY", "origin_country": ["korean"], "lines": ["lead_rapper", "sub_vocal"]},
+            {"full": "Seulgi", "m_code": "SLG", "origin_country": ["korean"], "lines": ["main_dancer", "lead_vocal"]},
+            {"full": "Wendy", "m_code": "WND", "origin_country": ["korean"], "lines": ["main_vocal"]},
+            {"full": "Yeri", "m_code": "YRI", "origin_country": ["korean"], "lines": ["sub_vocal", "sub_rapper", "maknae"]}
         ]
     },
     "TWICE": {
-        "g_code": "TWC",
-        "agency": "JYP Entertainment", 
-        "logo": "assets/logos/twice.png", 
-        'debut_song': "Like OOH-AHH",
+        "g_code": "TWC", "agency": "JYP Entertainment", "logo": "twice.png", "gender": "girlgroups", "debut_song": "Like OOH-AHH",
         "members": [
-            {"full": "Chaeyoung", "m_code": "CHY"}, 
-            {"full": "Dahyun", "m_code": "DHY"},
-            {"full": "Jeongyeon", "m_code": "JYJ"},
-            {"full": "Jihyo", "m_code": "JHY"},
-            {"full": "Mina", "m_code": "MNA"},
-            {"full": "Momo", "m_code": "MOM"},
-            {"full": "Nayeon", "m_code": "NYN"},
-            {"full": "Sana", "m_code": "SNA"},
-            {"full": "Tzuyu", "m_code": "TZU"}
+            {"full": "Chaeyoung", "m_code": "CHY", "origin_country": ["korean"], "lines": ["main_rapper", "sub_vocal"]}, 
+            {"full": "Dahyun", "m_code": "DHY", "origin_country": ["korean"], "lines": ["lead_rapper", "sub_vocal"]},
+            {"full": "Jeongyeon", "m_code": "JYJ", "origin_country": ["korean"], "lines": ["lead_vocal"]},
+            {"full": "Jihyo", "m_code": "JHY", "origin_country": ["korean"], "lines": ["leader", "main_vocal"]},
+            {"full": "Mina", "m_code": "MNA", "origin_country": ["japan"], "lines": ["main_dancer", "sub_vocal"]},
+            {"full": "Momo", "m_code": "MOM", "origin_country": ["japan"], "lines": ["main_dancer", "sub_vocal", "sub_rapper"]},
+            {"full": "Nayeon", "m_code": "NYN", "origin_country": ["korean"], "lines": ["lead_vocal", "lead_dancer", "center", "fotg"]},
+            {"full": "Sana", "m_code": "SNA", "origin_country": ["japan"], "lines": ["sub_vocal"]},
+            {"full": "Tzuyu", "m_code": "TZU", "origin_country": ["taiwan"], "lines": ["lead_dancer", "sub_vocal", "visual", "maknae"]}
         ]
     }
 }
@@ -230,10 +186,28 @@ for group_name, info in groups.items():
     g_code = info["g_code"]
     debut_song = info["debut_song"]
     
+    subfolder_gender = info.get("gender", "unknown").lower()
+    final_logo_path = f"assets/logos/groups/{subfolder_gender}/{info['logo']}"
+    
     for m in info["members"]:
         m_name = m["full"]
         m_code = m["m_code"]
         
+        raw_countries = m.get("origin_country", ["korean"])
+        if isinstance(raw_countries, str):
+            raw_countries = [raw_countries]
+            
+        final_nations = []
+        for country in raw_countries:
+            c_clean = country.lower().strip() if hasattr(country, 'strip') else country.lower()
+            if c_clean in ["korean", "japan"]:
+                final_nations.append(c_clean)
+            else:
+                final_nations.append("global")
+                
+        final_nations = list(set(final_nations)) 
+        m_lines = m.get("lines", ["vocal"])
+
         for style_name, style_info in style_map.items():
             s_code = style_info["s_code"]
             rarity = style_info["rarity"]
@@ -271,7 +245,10 @@ for group_name, info in groups.items():
                 "era": current_era,
                 "style": style_name,
                 "image": f"assets/members/{target_folder}/{safe_group_code}_{safe_name}_{s_code.lower()}.jpg",
-                "logo": info["logo"]
+                "logo": final_logo_path,
+                "origin_country": raw_countries,
+                "nation": final_nations,
+                "lines": m_lines
             }
             pc_data.append(item)
             card_serial += 1

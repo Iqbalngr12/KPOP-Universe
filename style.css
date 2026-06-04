@@ -622,7 +622,8 @@ header h1 span {
     padding: 0 !important;
     border-radius: 50% !important;
     overflow: hidden !important;
-    background: rgba(255, 255, 255, 0.03) !important;
+    background: transparent;
+    color: white;
     min-width: 45px !important;
 }
 
@@ -648,28 +649,97 @@ header h1 span {
     gap: 15px;
     margin-bottom: 30px;
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
 }
 
-#sort-pc {
-    background: rgba(255, 255, 255, 0.05);
+.custom-dropdown {
+    position: relative;
+    width: 180px;
+    font-family: 'Poppins', sans-serif;
+    user-select: none;
+    z-index: 500;
+}
+
+.dropdown-selected {
+    background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    color: white;
-    padding: 10px 15px;
-    border-radius: 10px;
-    outline: none;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
     cursor: pointer;
-    font-size: 14px;
-    transition: 0.3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
 }
 
-#sort-pc:hover {
+.custom-dropdown:hover .dropdown-selected {
     border-color: var(--secondary);
+    background: rgba(255, 255, 255, 0.07);
 }
 
-#sort-pc option {
-    background: #1a1a1a;
-    color: white;
+.custom-dropdown.open .dropdown-selected {
+    border-color: var(--primary);
+    box-shadow: 0 0 12px rgba(255, 0, 122, 0.2);
+    border-radius: 12px 12px 0 0;
+}
+
+.dropdown-arrow {
+    font-size: 9px;
+    opacity: 0.5;
+    transition: transform 0.3s ease;
+}
+
+.custom-dropdown.open .dropdown-arrow {
+    transform: rotate(180deg);
+    color: var(--primary);
+    opacity: 1;
+}
+
+.dropdown-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #141419;
+    border: 1px solid rgba(255, 0, 122, 0.25);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(5px);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.custom-dropdown.open .dropdown-options {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-opt {
+    padding: 11px 16px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.dropdown-opt:hover {
+    background: rgba(255, 0, 122, 0.08);
+    color: #fff;
+    padding-left: 20px;
+}
+
+.dropdown-opt.active {
+    background: rgba(255, 0, 122, 0.15);
+    color: var(--primary);
+    font-weight: 700;
 }
 
 .group-filter-btn {
@@ -839,6 +909,35 @@ header h1 span {
 .gfm-item.active .gfm-name {
     opacity: 1;
     color: var(--primary);
+}
+
+
+/* Styling tombol advanced filter */
+
+.adv-filter-btn.active {
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
+    box-shadow: 0 0 8px rgba(255, 0, 122, 0.2);
+    background: rgba(255, 0, 122, 0.05) !important;
+}
+
+
+/* Modifikasi input dropdown modal agar selaras dengan tema cyberpunk gelap */
+
+.user-bias-rank-select {
+    background: #1e1e1e;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.user-bias-rank-select:focus {
+    border-color: var(--secondary);
 }
 
 
@@ -2256,7 +2355,7 @@ header h1 span {
 
 
 /* ============================================================
-   11. COLLECTOR DASHBOARD PROFILE SECTION
+   11. COLLECTOR DASHBOARD PROFILE & ACHIEVEMENT SECTION
    ============================================================ */
 
 .profile-section {
@@ -2403,6 +2502,399 @@ header h1 span {
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-top: 4px;
+}
+
+.profile-name-badge-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.profile-badge-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.badge-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.newbie-badge {
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    color: #e0e0e0 !important;
+}
+
+.fans-badge {
+    border-color: #ff007a !important;
+    color: #ff007a !important;
+    box-shadow: 0 0 8px rgba(255, 0, 122, 0.3);
+}
+
+.stan-badge {
+    border-color: #b942ff !important;
+    color: #b942ff !important;
+    box-shadow: 0 0 8px rgba(185, 66, 255, 0.3);
+}
+
+.elite-badge {
+    border-color: #00f2fe !important;
+    color: #00f2fe !important;
+    box-shadow: 0 0 8px rgba(0, 242, 254, 0.3);
+}
+
+.addict-badge {
+    border-color: #ff3e3e !important;
+    color: #ff3e3e !important;
+    box-shadow: 0 0 8px rgba(255, 62, 62, 0.3);
+}
+
+.crown-badge {
+    border-color: #ffd700 !important;
+    color: #ffd700 !important;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+    font-weight: 800;
+}
+
+.profile-showcase-card {
+    position: relative;
+    width: 100%;
+    max-width: 110px;
+    aspect-ratio: 2 / 3;
+    background: #111;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 0, 122, 0.25);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    animation: showcase-float 4s ease-in-out infinite;
+}
+
+.profile-showcase-card:hover {
+    transform: translateY(-8px) scale(1.05);
+    border-color: var(--secondary);
+    box-shadow: 0 8px 20px rgba(0, 242, 254, 0.4);
+}
+
+.profile-showcase-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.showcase-card-badge {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(2px);
+    padding: 2px 6px;
+    font-size: 8px;
+    border-radius: 4px;
+    font-weight: 800;
+    color: var(--secondary);
+    border: 0.5px solid var(--secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 3;
+}
+
+.showcase-card-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.95) 70%);
+    color: #fff;
+    font-size: 10px;
+    text-align: center;
+    padding: 8px 4px 4px 4px;
+    font-weight: 600;
+    z-index: 3;
+    letter-spacing: 0.3px;
+}
+
+
+/* --- ACHIEVEMENT --- */
+
+.achievement-toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #1a1a1a;
+    border-left: 5px solid #ffcc00;
+    color: #ffffff;
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    animation: slideIn 0.5s ease forward;
+}
+
+.achievement-toast.fade-out {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+}
+
+
+/* --- LAYOUT BAR PROGRESS TROPHY --- */
+
+.profile-acv-progress-panel {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin: 35px 0 20px 0;
+}
+
+.acv-progress-label-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #fff;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.acv-progress-bar-bg {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.acv-progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+/* --- GRID BASE CARD ACHIVEMENT --- */
+
+.profile-achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.profile-acv-card {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 14px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+
+/* Kondisi Terkunci (Grayscale & Transparan Redup) */
+
+.profile-acv-card.acv-card-locked {
+    opacity: 0.25;
+    filter: grayscale(100%);
+    border-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+.profile-acv-card.acv-card-locked:hover {
+    opacity: 0.45;
+}
+
+
+/* Kondisi Terbuka (Nyala Glowing) */
+
+.profile-acv-card.acv-card-unlocked {
+    opacity: 1;
+    filter: none;
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.acv-card-header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.acv-badge-tier {
+    font-size: 8px;
+    font-weight: 900;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.acv-status-icon {
+    font-size: 11px;
+}
+
+.acv-card-title {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    margin: 4px 0;
+    line-height: 1.3;
+}
+
+.acv-card-desc {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 11px;
+    line-height: 1.4;
+    margin: 4px 0 0 0;
+}
+
+
+/* --- THEMATIK WARNA TIAP TIER TROPHY ACTIVE --- */
+
+.acv-card-unlocked.tier-common {
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.acv-card-unlocked.tier-common .acv-badge-tier {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.acv-card-unlocked.tier-uncommon {
+    border-color: rgba(46, 204, 113, 0.3);
+}
+
+.acv-card-unlocked.tier-uncommon .acv-badge-tier {
+    background: #2ecc71;
+    color: #fff;
+}
+
+.acv-card-unlocked.tier-rare {
+    border-color: rgba(0, 242, 254, 0.3);
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.05);
+}
+
+.acv-card-unlocked.tier-rare .acv-badge-tier {
+    background: #00f2fe;
+    color: #000;
+}
+
+.acv-card-unlocked.tier-superrare {
+    border-color: rgba(208, 205, 30, 0.3);
+    box-shadow: 0 0 10px rgba(208, 205, 30, 0.05);
+}
+
+.acv-card-unlocked.tier-superrare .acv-badge-tier {
+    background: #d0cd1e;
+    color: #000;
+}
+
+.acv-card-unlocked.tier-ultrarare {
+    border-color: rgba(255, 0, 122, 0.3);
+    box-shadow: 0 0 10px rgba(255, 0, 122, 0.05);
+}
+
+.acv-card-unlocked.tier-ultrarare .acv-badge-tier {
+    background: var(--primary);
+    color: #fff;
+}
+
+.acv-card-unlocked.tier-limit {
+    border-color: rgba(201, 6, 191, 0.4);
+}
+
+.acv-card-unlocked.tier-limit .acv-badge-tier {
+    background: #c906bf;
+    color: #fff;
+}
+
+.acv-card-unlocked.tier-epic {
+    border-color: rgba(255, 119, 0, 0.4);
+}
+
+.acv-card-unlocked.tier-epic .acv-badge-tier {
+    background: #ff7700;
+    color: #fff;
+}
+
+.acv-card-unlocked.tier-legendary {
+    border-color: #ffd700;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.2);
+    animation: gold-pulse-acv 3s infinite alternate;
+}
+
+.acv-card-unlocked.tier-legendary .acv-badge-tier {
+    background: #ffd700;
+    color: #000;
+    font-weight: 800;
+}
+
+
+/* --- POPUP NOTIFIKASI ACHIEVEMENT LUXURY --- */
+
+.achievement-popup-box {
+    position: fixed;
+    bottom: 25px;
+    right: -350px;
+    width: 300px;
+    background: linear-gradient(135deg, #18181f, #111115);
+    border: 1px solid #ffd700;
+    border-left: 5px solid #ffd700;
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 215, 0, 0.1);
+    z-index: 999999;
+    transition: right 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.achievement-popup-box.slide-in {
+    right: 25px;
+}
+
+.acv-icon-wrap {
+    font-size: 28px;
+    filter: drop-shadow(0 0 6px #ffd700);
+}
+
+.acv-text-wrap h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #ffd700;
+    margin: 0 0 2px 0;
+}
+
+.acv-text-wrap p {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
 }
 
 
@@ -2559,18 +3051,32 @@ header h1 span {
     z-index: 2;
 }
 
+
+/* --- CONTAINER LOGO FLEXIBEL (DI ATAS PIL RARITY) --- */
+
 .modal-logo-wrap {
-    position: absolute;
-    bottom: 16px;
-    left: 16px;
-    z-index: 3;
+    position: relative;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 140px;
+    height: 45px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    z-index: 10;
 }
 
 .modal-group-logo {
-    height: 28px;
-    width: auto;
-    filter: brightness(0) invert(1);
-    opacity: 0.65;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    filter: drop-shadow(1px 1px 0px rgba(255, 255, 255, 0.8)) drop-shadow(-1px -1px 0px rgba(255, 255, 255, 0.8)) drop-shadow(0px 0px 4px rgba(255, 255, 255, 0.5)) !important;
+    opacity: 1 !important;
+    transform: none !important;
 }
 
 .modal-left-actions {
@@ -2741,6 +3247,143 @@ header h1 span {
     display: flex;
     gap: 10px;
     align-items: center;
+}
+
+
+/* --- STYLING BENDERA DI SEBELAH NAMA --- */
+
+.member-flag-icon {
+    font-family: "Twemoji Mozilla", "Segoe UI Emoji", "Apple Color Emoji", sans-serif;
+    font-size: 18px;
+    margin-left: 6px;
+    vertical-align: middle;
+    display: inline-block;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+
+/* --- WRAPPER POSISI IDOL --- */
+
+.member-position-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: -5px;
+    margin-bottom: 20px;
+}
+
+
+/* --- BADGE UTAMA POSISI --- */
+
+.badge-line {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+}
+
+
+/* 👑 UTAMA: LEADER, CENTER, FOTG */
+
+.badge-line.line-leader {
+    background: rgba(231, 76, 60, 0.15);
+    border-color: rgba(231, 76, 60, 0.4);
+    color: #e74c3c;
+}
+
+.badge-line.line-center {
+    background: rgba(241, 196, 15, 0.15);
+    border-color: rgba(241, 196, 15, 0.4);
+    color: #f1c40f;
+}
+
+.badge-line.line-fotg {
+    background: rgba(243, 156, 18, 0.15);
+    border-color: rgba(243, 156, 18, 0.4);
+    color: #e67e22;
+}
+
+
+/* Face of the Group */
+
+.badge-line.line-visual {
+    background: rgba(155, 89, 182, 0.15);
+    border-color: rgba(155, 89, 182, 0.4);
+    color: #9b59b6;
+}
+
+.badge-line.line-maknae {
+    background: rgba(46, 204, 113, 0.15);
+    border-color: rgba(46, 204, 113, 0.4);
+    color: #2ecc71;
+}
+
+
+/* 🎤 KELOMPOK VOCAL (Nuansa Biru) */
+
+.badge-line.line-main_vocal {
+    background: rgba(41, 128, 185, 0.25);
+    border-color: rgba(41, 128, 185, 0.6);
+    color: #3498db;
+    font-weight: 900;
+}
+
+.badge-line.line-lead_vocal {
+    background: rgba(52, 152, 219, 0.15);
+    border-color: rgba(52, 152, 219, 0.4);
+    color: #5dade2;
+}
+
+.badge-line.line-sub_vocal,
+.badge-line.line-vocal {
+    background: rgba(52, 152, 219, 0.08);
+    border-color: rgba(52, 152, 219, 0.2);
+    color: #aed6f1;
+}
+
+
+/* 🔥 KELOMPOK RAPPER (Nuansa Oranye/Merah Tua) */
+
+.badge-line.line-main_rapper {
+    background: rgba(192, 57, 43, 0.25);
+    border-color: rgba(192, 57, 43, 0.6);
+    color: #e74c3c;
+    font-weight: 900;
+}
+
+.badge-line.line-lead_rapper {
+    background: rgba(211, 84, 0, 0.15);
+    border-color: rgba(211, 84, 0, 0.4);
+    color: #e67e22;
+}
+
+.badge-line.line-sub_rapper,
+.badge-line.line-rapper {
+    background: rgba(230, 126, 34, 0.08);
+    border-color: rgba(230, 126, 34, 0.2);
+    color: #f5b041;
+}
+
+
+/* 💃 KELOMPOK DANCER (Nuansa Toska/Cyan) */
+
+.badge-line.line-main_dancer {
+    background: rgba(22, 160, 133, 0.25);
+    border-color: rgba(22, 160, 133, 0.6);
+    color: #1abc9c;
+    font-weight: 900;
+}
+
+.badge-line.line-lead_dancer {
+    background: rgba(26, 188, 156, 0.15);
+    border-color: rgba(26, 188, 156, 0.4);
+    color: #48c9b0;
 }
 
 .btn-download {
@@ -3341,6 +3984,38 @@ header h1 span {
     }
     100% {
         box-shadow: 0 0 0 3px rgba(255, 0, 122, 0.12), 0 8px 32px rgba(255, 0, 122, 0.2);
+    }
+}
+
+@keyframes showcase-float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-4px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(120%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes gold-pulse-acv {
+    0% {
+        border-color: rgba(255, 215, 0, 0.3);
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
+    }
+    100% {
+        border-color: rgba(255, 215, 0, 0.7);
+        box-shadow: 0 0 18px rgba(255, 215, 0, 0.3);
     }
 }
 
